@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1097</width>
+    <height>591</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>321</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Raw Video Scripts</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>170</y>
+      <width>281</width>
+      <height>201</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>150</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Script Details</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startEditing">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>460</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start Editing</string>
+    </property>
+   </widget>
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>261</width>
+      <height>491</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>r/</string>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="refreshScripts">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>500</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>↻</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="loggedinas">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>50</y>
+      <width>291</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Logged in as:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="editedby">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>370</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>390</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Edited By:</string>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>685</x>
+      <y>80</y>
+      <width>331</width>
+      <height>201</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="manualexport">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>390</y>
+      <width>151</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Manual Export</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>290</y>
+      <width>351</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &quot;Manual Export&quot; To manually upload the video to YouTube. By doing this you have responsibility to upload the video. Please make sure you have the Youtube Crededentials to do this. Once the Video and its Files are downloaded, the script will be marked as  an &quot;Export&quot;.</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="exportlocation">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>430</y>
+      <width>151</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open Export Location</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>390</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>50</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video Generator Queue</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="flagComplete">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>420</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Flag as Complete</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="flagscriptquality">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>420</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Flag Script for Quality</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1097</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
