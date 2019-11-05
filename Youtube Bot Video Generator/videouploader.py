@@ -15,11 +15,6 @@ youtube_bot_path = "I:\Python3.4.3\YouTubeBot\youtube-upload-master\\bin\\"
 
 
 
-SCOPES = 'https://www.googleapis.com/auth/youtube.upload'
-CLIENT_SECRET_FILE = settings.google_cred_upload
-APPLICATION_NAME = 'youtube-upload'
-CREDS_FILENAME = '.youtube-upload-credentials.json'
-
 def get_credentials():
     """Gets valid user credentials from storage.
 
@@ -29,14 +24,12 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    home_dir = os.path.expanduser('~')
-    credential_path = os.path.join(home_dir,
-                                   CREDS_FILENAME)
+    credential_path = settings.creds_path + ".youtube-upload-credentials.json"
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-        flow.user_agent = APPLICATION_NAME
+        flow = client.flow_from_clientsecrets(settings.google_cred_upload, 'https://www.googleapis.com/auth/youtube.upload')
+        flow.user_agent = 'youtube-upload'
         credentials = tools.run_flow(flow, store)
     return credentials
 
@@ -45,8 +38,8 @@ def upload(title, description, tags, thumbnailpath, filepath, time_to_upload):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     try:#checkcall
-        p = subprocess.check_call(["C:\Python27\python.exe",
-                   "C:\\Users\\Thomas Shaer\\Desktop\\Youtube Bot Experimental\\YouTubeBot Experimental\\youtube-upload-master\\youtube_upload\\__main__.py",
+        p = subprocess.check_call([settings.python27_location,
+                   "%s\\__main__.py" % settings.youtube_upload_location,
                    "--title=%s" % title,
                    "--description=%s" % description,
                    "--category=Entertainment",

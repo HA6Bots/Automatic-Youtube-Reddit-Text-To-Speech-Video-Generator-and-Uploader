@@ -59,6 +59,13 @@ class VideoScriptEngine():
             writeTextToFile(export_location + "/youtubetags.txt", self.youtube_tags)
             self.isRendered = True
             self.save()
+            if settings.exportOffline:
+                generatorclient.updateUploadDetails(self.scriptno, None, None)
+                deleteRawSave(self.scriptno)
+                videoscripts.remove(self)
+                print("Video Successfully exported offline")
+
+
         else:
             print("VID GEN script %s already rendered" % self.scriptno)
 
@@ -75,7 +82,8 @@ class VideoScriptEngine():
         # title, description, tags, thumbnailpath, filepath
         time_to_upload = calculateUploadTime()
         print("Uploading video %s, sceduled release %s" % (self.scriptno, time_to_upload))
-        success = videouploader.upload(title, description, tags, self.vid_thumbnail, self.vid_path, time_to_upload.replace(" ", "T") + ".0Z")
+        success = videouploader.upload(title, description, tags, self.vid_thumbnail, self.vid_path,
+                                       time_to_upload.replace(" ", "T") + ".0Z")
         if success:
             print("Successfully Uploaded video %s" % self.scriptno)
             now = datetime.datetime.now()
@@ -84,6 +92,8 @@ class VideoScriptEngine():
             print("Done Uploading Video %s" % self.scriptno)
             videoscripts.remove(self)
             deleteRenderedVideoFolder(self.scriptno)
+        else:
+            return False
 
 
 def loadTextFile(file):

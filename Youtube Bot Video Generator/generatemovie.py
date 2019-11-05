@@ -43,7 +43,7 @@ class Movie():
                 clip = clip.set_audio(audio_clip)
                 clip_with_interval = concatenate_videoclips([clip, video_clip])
                 clips.append(clip_with_interval)
-                self.closeReader(video_clip)
+                #self.closeReader(video_clip)
 
             else:
                 prev_image_index = self.transitions[i-1][1]
@@ -56,9 +56,9 @@ class Movie():
                 clip = clip.set_audio(audio_clip)
                 clip_with_interval = concatenate_videoclips([clip, video_clip])
                 clips.append(clip_with_interval)
-                self.closeReader(video_clip)
+                #self.closeReader(video_clip)
 
-        gc.collect()
+        #gc.collect()
         main_vid_duration = 0
         for i in range(1, len(clips), 1):
             main_vid_duration += clips[i].duration
@@ -68,25 +68,25 @@ class Movie():
         music_loop = afx.audio_loop(AudioFileClip(self.background_music_name).fx(afx.volumex, 0.2),
                                     duration=int(main_vid_duration))
         music_loop.to_audiofile("%s/music-loop.wav" % settings.tempPath)
-        del music_loop
-        gc.collect()
+        #del music_loop
+        #gc.collect()
         pause_time = int(clips[0].duration * 1000)
         print("Adding pause to start of Audio Loop (%s) " % (pause_time / 1000))
         audio_clip = AudioSegment.from_wav("%s/music-loop.wav" % settings.tempPath)
         new_audio = AudioSegment.silent(duration=(pause_time)) + audio_clip
         new_audio.export("%s/music-loop2.wav" % settings.tempPath, format='wav')
-        del new_audio
-        gc.collect()
+        #del new_audio
+        #gc.collect()
         #video_with_audio = main_vid.set_audio(CompositeAudioClip([main_vid.audio, music_loop]))
 
         # here we are combining the first clip with the last
         print("Combining all Video Clips %s" % (pause_time / 1000))
         main_vid_combined = concatenate_videoclips(clips)
-        del clips
-        gc.collect()
+        #del clips
+        #gc.collect()
         main_vid_with_audio = main_vid_combined.set_audio(CompositeAudioClip([main_vid_combined.audio, AudioFileClip("%s/music-loop2.wav" % settings.tempPath)]))
-        del main_vid_combined
-        gc.collect()
+        #del main_vid_combined
+        #gc.collect()
 
         folder_location = settings.finishedvideosdirectory + "/vid%s" % self.scriptno
         if not os.path.exists(folder_location):
@@ -103,11 +103,12 @@ class Movie():
         #    target.audio.reader.close_proc()
 
     def addFrame(self, image_file, audio_file):
+        audio_file = audio_file.replace("\\", "/")
         try:
-            audio_clip = AudioSegment.from_wav(audio_file)
-            f = sf.SoundFile(audio_file)
-        except Exception:
-            print("error with frame audio for %s" % audio_file)
+            audio_clip = AudioSegment.from_wav(r"%s"%audio_file)
+            f = sf.SoundFile(r"%s"%audio_file)
+        except Exception as e:
+            print(e)
             audio_clip = AudioSegment.from_wav("%s/pause.wav" % settings.assetPath)
             f = sf.SoundFile("%s/pause.wav" % settings.assetPath)
 
@@ -117,6 +118,7 @@ class Movie():
         self.durations.append(duration)
 
     def addFrameWithPause(self, image_file, audio_file, pause):
+        audio_file = audio_file.replace("\\", "/")
         f = sf.SoundFile(audio_file)
         audio_clip = AudioSegment.from_wav(audio_file)
         duration = (len(f) / f.samplerate) + pause / 1000
@@ -129,11 +131,12 @@ class Movie():
     def addFrameWithTransition(self, image_file, audio_file, transition_file):
         media_info = MediaInfo.parse(transition_file)
         duration_in_ms = media_info.tracks[0].duration
+        audio_file = audio_file.replace("\\", "/")
         try:
-            audio_clip = AudioSegment.from_wav(audio_file)
-            f = sf.SoundFile(audio_file)
-        except Exception:
-            print("error with frame audio for %s" % audio_file)
+            audio_clip = AudioSegment.from_wav(r"%s"%audio_file)
+            f = sf.SoundFile(r"%s"%audio_file)
+        except Exception as e:
+            print(e)
             audio_clip = AudioSegment.from_wav("%s/pause.wav" % settings.assetPath)
             f = sf.SoundFile("%s/pause.wav" % settings.assetPath)
         duration = (len(f) / f.samplerate)
@@ -146,6 +149,7 @@ class Movie():
     def addFrameWithTransitionAndPause(self, image_file, audio_file, transition_file, pause):
         media_info = MediaInfo.parse(transition_file)
         duration_in_ms = media_info.tracks[0].duration
+        audio_file = r"%s"%audio_file
         f = sf.SoundFile(audio_file)
         try:
             audio_clip = AudioSegment.from_wav(audio_file)
