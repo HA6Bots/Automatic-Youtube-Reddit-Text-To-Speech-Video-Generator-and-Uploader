@@ -3,6 +3,7 @@ import pickle
 import hashlib
 import mysql.connector
 from mysql.connector import pooling
+import settings
 import datetime
 from time import sleep
 
@@ -271,9 +272,10 @@ def beginDataBaseConnection():
     connection_pool = pooling.MySQLConnectionPool(
     pool_size=32,
         pool_reset_session=True,
-      host="XXXXX",
-      user="XXXXX",
-      passwd="XXXXX"
+      host=settings.database_host,
+      user=settings.database_user,
+      passwd=settings.database_password,
+    auth_plugin='mysql_native_password'
     )
     print("Started database connection")
 

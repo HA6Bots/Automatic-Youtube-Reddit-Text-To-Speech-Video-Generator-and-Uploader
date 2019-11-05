@@ -1,4 +1,4 @@
-
+import settings
 import socket
 from time import sleep
 from threading import Thread
@@ -17,7 +17,7 @@ class VideoGeneratorClient():
         self.authorized = authorized
 
 def startVideoGeneratorServer():
-    server_address = ('localhost', 11000)
+    server_address = (settings.server_location, int(settings.server_port_vid_gen))
     print('Starting video generator server on %s port %s' % server_address)
     socket.bind(server_address)
     socket.listen(5)

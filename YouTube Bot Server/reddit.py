@@ -2,10 +2,13 @@ import praw
 import datetime
 from datetime import timezone
 import database
+import settings
 
-reddit = praw.Reddit(client_id='XXXXX',
-                     client_secret='XXXXX', password='XXXXX',
-                     user_agent='XXXXX', username='XXXXX')
+reddit = praw.Reddit(client_id=settings.reddit_client_id,
+                     client_secret=settings.reddit_client_secret, password=settings.reddit_client_password,
+                     user_agent=settings.reddit_client_user_agent, username=settings.reddit_client_username)
+
+
 
 class Submission():
     def __init__(self, subredditid, submission_id, subreddit, permalink, link, title, author, upvotes, downvotes, amountcomments, comments, timecreated, timegathered, visited, alreadyIn):
@@ -41,7 +44,7 @@ def getInfo(subredditname, amount):
     for x, submission in enumerate(hot_subreddit):
         alreadyIn = False
         print("%s/%s"%(x + 1, amount))
-        if submission.num_comments < 1000:
+        if submission.num_comments < settings.reddit_minimum_comments:
             print("Too little comments (%s)" % submission.num_comments)
             continue
         if submission.id in [scriptid[1] for scriptid in all_scripts]:
@@ -53,9 +56,9 @@ def getInfo(subredditname, amount):
                 print("Script already complete, skipping")
                 continue
         comments = []
-        amountReplies = 4
+        amountReplies = settings.reddit_replies_per_comment
         try:
-            for commentThread in range(0, 30, 1):
+            for commentThread in range(0, settings.reddit_comments_per_post, 1):
                 try:
                     threadcomments = ()
                     thread = submission.comments[commentThread]

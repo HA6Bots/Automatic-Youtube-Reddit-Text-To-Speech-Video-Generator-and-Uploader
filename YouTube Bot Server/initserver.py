@@ -1,15 +1,19 @@
+import settings
+settings.generateConfigFile()
+
 import reddit
-import socketserver
+import socketserverhandler
 import socketservervideogenerator
 from time import sleep
 import database
 import datetime
 from threading import Thread
+import atexit
 
 def getScripts():
     global lastUpdate
     print("Grabbing more scripts...")
-    info = reddit.getInfo('AskReddit', 45)
+    info = reddit.getInfo('AskReddit', settings.reddit_amount_posts)
     new_scripts = len([script for script in info if not script.update])
     updating_scripts = len([script for script in info if script.update])
     print("Adding %s new scripts, updating %s" % (new_scripts, updating_scripts))
@@ -37,7 +41,7 @@ def updateScripts():
 
 
 def init():
-    socketserver.startServer()
+    socketserverhandler.startServer()
     socketservervideogenerator.startVideoGeneratorServer()
     thread = Thread(target=updateScripts)
     thread.start()
@@ -48,6 +52,11 @@ def init():
     #print(getVideoCountFromStatus("RAW"))
     #print(getRowCount("scripts"))x
 
+def exit_handler():
+    print("Safe Exit")
+    socketserverhandler.socket.close()
+    socketservervideogenerator.socket.close()
 
 if __name__ == "__main__":
+    atexit.register(exit_handler)
     init()
