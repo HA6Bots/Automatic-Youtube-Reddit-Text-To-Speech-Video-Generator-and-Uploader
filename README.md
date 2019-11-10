@@ -1,3 +1,6 @@
+# NO LONGER SUPPORTED. PLEASE DO NOT EMAIL THE GMAIL ACCOUNT LISTED IN THE VIDEO. YOU WILL GET NO RESPONSE.
+# Due to a lack of time and general loss of interest/motivation I have decided to terminate development of this project. This means that # I will no longer be providing the setup service and will not be replying to any emails. Thanks to all who took interest in the project.
+
 # Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader
 
 Following the recent YouTube trend in “Reddit to Text-To-Speech” YouTube Videos I embarked on a project to create a program that can automate the process of receiving, generating and uploading these videos to YouTube with as little intervention as possible. It took 4 months to finish the project and is comprised of 3 separate programs that work simultaneously in order to complete this task.
