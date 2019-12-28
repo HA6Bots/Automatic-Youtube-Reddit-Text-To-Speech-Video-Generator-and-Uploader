@@ -1,5 +1,4 @@
 # NO LONGER SUPPORTED. PLEASE DO NOT EMAIL THE GMAIL ACCOUNT LISTED IN THE VIDEO. YOU WILL GET NO RESPONSE.
-# Due to a lack of time and general loss of interest/motivation I have decided to terminate development of this project. This means that # I will no longer be providing the setup service and will not be replying to any emails. Thanks to all who took interest in the project.
 
 # Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader
 
