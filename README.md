@@ -52,7 +52,7 @@ PyQt5, cv2, PIL, numpy
 **Video Generator Client:**
 pydub, oauth2client, soundfile, pymediainfo, cv2, moviepy, PIL, numpy, matplotlib
 
-YouTube-Upload https://github.com/tokland/youtube-upload
+YouTube-Upload (python27 with oauth2client - see videoploader.py) https://github.com/tokland/youtube-upload
 
 Balabolka http://www.cross-plus-a.com/balabolka.htm
 
