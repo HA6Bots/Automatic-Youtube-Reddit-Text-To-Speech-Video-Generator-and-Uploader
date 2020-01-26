@@ -1,0 +1,47 @@
+Python 3.5+ (recommended python 3.7)
+
+_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
+
+Accounts:
+
+Reddit API key https://www.reddit.com/settings/profile
+
+Automatic uploading (Video Generator Client -> config.ini: export_offline = false)
+Google API account (YouTube Data API v3)
+youtube-upload https://github.com/tokland/youtube-upload
+
+_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
+
+Client:
+(pip3 install...)
+    PyQt5, cv2, PIL, numpy
+
+_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
+
+YouTube Bot Server:
+(pip3 install...)
+    Mysql-connector, praw
+
+MySQL https://dev.mysql.com/downloads/mysql/
+
+_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
+
+Video Generator Client:
+(pip3 install...)
+    pydub, oauth2client, soundfile, pymediainfo, cv2, moviepy, PIL, numpy, matplotlib
+    
+Python 2.7.15 (Video Generator Client -> config.ini: python27_location = C:\Python27\python.exe)
+(C:\Python27\python.exe -m pip install ...)
+    oauth2client
+    
+    
+    
+(If using Linux be sure to install the following with wine) 
+https://www.reddit.com/r/linux/comments/6z41qb/my_text_to_speech_tts_solution_wine_microsoft/
+
+Balabolka (command line utility) http://www.cross-plus-a.com/balabolka.htm 
+Daniel MLG Softscan https://www.youtube.com/watch?v=yj3dhTnyotY
+  
+_,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
+
+
