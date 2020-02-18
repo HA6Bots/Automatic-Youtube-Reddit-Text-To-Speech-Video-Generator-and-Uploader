@@ -5,6 +5,7 @@ import datetime
 import pickle
 import datetime
 import database
+import reddit
 import string
 import random
 import settings
@@ -139,8 +140,21 @@ def clientTick(client):
                         if incomingdata[0] == client.key:
                             print("%s SERVER sending scripts to user %s" % (
                             datetime.datetime.now(), repr(client.username)))
-                            data = database.getScripts(incomingdata[2])
-                            sendToClient(client_connection, ("scripts-return", data))
+                            amount = incomingdata[2]
+                            filter = incomingdata[3]
+                            if filter == "ups":
+                                data = database.getScripts(amount, "ups")
+                                sendToClient(client_connection, ("scripts-return", data))
+                            elif filter == "latest posts":
+                                data = database.getScripts(amount, "timecreated")
+                                sendToClient(client_connection, ("scripts-return", data))
+                            elif filter == "recently added":
+                                data = database.getScripts(amount, "timegathered")
+                                sendToClient(client_connection, ("scripts-return", data))
+                            elif filter == "comments":
+                                data = database.getScripts(amount, "num_comments")
+                                sendToClient(client_connection, ("scripts-return", data))
+
                             pass
                         else:
                             print("%s SERVER user %s key does not match up" % (
@@ -226,6 +240,33 @@ def clientTick(client):
                                 datetime.datetime.now(), repr(client.username), scriptno, flagtype))
                             sendToAllClients(('script-status-update', scriptno, flagtype, client.username))
                             client.editingScript = None
+                        else:
+                            print("%s SERVER user %s key does not match up" % (
+                            datetime.datetime.now(), repr(client.username)))
+
+                    elif "add-script" == incomingdata[1]:
+                        if incomingdata[0] == client.key:
+                            url = incomingdata[2]
+                            try:
+                                post = reddit.getPostByUrl(url)
+
+                                if post is not None:
+                                    print("%s SERVER user %s added script %s" % (
+                                        datetime.datetime.now(), repr(client.username), post.submission_id))
+                                    database.addSubmission(post)
+                                    sendToClient(client_connection, ('add-script-success', True, "Successfully added script"))
+
+                                else:
+                                    print("%s SERVER user %s attempted to add script that already exists" % (
+                                        datetime.datetime.now(), repr(client.username)))
+                                    sendToClient(client_connection,
+                                                 ('add-script-success', False, "Script already in database"))
+                            except Exception as e:
+                                print("%s SERVER user %s error attempting to add script %s" % (
+                                    datetime.datetime.now(), repr(client.username), url))
+                                sendToClient(client_connection,
+                                             ('add-script-success', False, "An error occured trying to add the script"))
+
                         else:
                             print("%s SERVER user %s key does not match up" % (
                             datetime.datetime.now(), repr(client.username)))
