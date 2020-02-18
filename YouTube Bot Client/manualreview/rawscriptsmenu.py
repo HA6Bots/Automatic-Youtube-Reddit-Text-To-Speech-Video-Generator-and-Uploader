@@ -9,12 +9,14 @@ from manualreview import videoscriptcore
 from manualreview import videoeditor
 from manualreview import client
 from manualreview import publishmenu
+from manualreview import settings
 class ScriptsMenu(QMainWindow):
 
     edit_response_false = pyqtSignal()
     edit_response_true = pyqtSignal()
     update_table = pyqtSignal()
     reset_editing_status = pyqtSignal()
+    add_url_response = pyqtSignal()
 
     def __init__(self, username):
         QWidget.__init__(self)
@@ -22,16 +24,29 @@ class ScriptsMenu(QMainWindow):
         self.loggedinas.setText("Logged in as: %s" % username)
         self.treeWidget.currentItemChanged.connect(self.changeSelected)
         self.startEditing.clicked.connect(self.startVideoEditor)
-        self.refreshScripts.clicked.connect(self.addRawScriptsToTree)
+        self.refreshScripts.clicked.connect(self.refreshScriptsRequest)
         self.flagComplete.clicked.connect(lambda : self.flagScript("MANUALCOMPLETE"))
+        self.addscript.clicked.connect(self.addScriptFromURL)
         self.flagscriptquality.clicked.connect(lambda : self.flagScript("BAD"))
         self.update_table.connect(self.updateColors)
+        self.add_url_response.connect(self.addedNewScript)
         self.reset_editing_status.connect(self.resetEditingStatus)
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.updateTime)
         self.timer.start(4000)
         self.currentScriptSelected = None
         self.isEditing = False
+
+    def addedNewScript(self):
+        self.addresponse.setText(client.addScriptResponse)
+
+    def addScriptFromURL(self):
+        url = self.scripturl.text()
+        if url is None:
+            self.addresponse.setText("Please Enter a URL")
+        else:
+            self.addresponse.setText("Waiting for response from server...")
+            client.addScriptByURL(url)
 
     def flagScript(self, flagtype):
         if self.currentScriptSelected is not None:
@@ -114,13 +129,14 @@ class ScriptsMenu(QMainWindow):
             selectedScript = videoscriptcore.video_scripts[indexSelectedScript]
             self.currentScriptSelected = selectedScript.scriptno
             self.textBrowser.append("Category: %s\n"%selectedScript.sub_reddit)
-            self.textBrowser.append("Title: %s\n"%selectedScript.title)
             self.textBrowser.append("Upvotes: %s"%selectedScript.upvotes)
             self.textBrowser.append("Author: %s"%selectedScript.author)
             self.textBrowser.append("Vid Number: %s"%selectedScript.vidNo)
             self.textBrowser.append("Status: %s"%selectedScript.status)
             self.textBrowser.append("Script ID: %s"%selectedScript.scriptno)
             self.textBrowser.append("Being Edited by: %s"%selectedScript.editedby)
+            self.textBrowser.append("\nTitle: %s\n"%selectedScript.title)
+
             self.editedby.setText(selectedScript.editedby)
             self.currentTreeWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("blue")))
         except AttributeError:
@@ -129,22 +145,24 @@ class ScriptsMenu(QMainWindow):
 
 
     def updateColors(self):
-        children = self.count_tems()
-        for i in range(len(children)):
-            scriptName = children[i].text(0)
-            scriptNo = scriptName.replace("script", "")
-            indexSelectedScript = videoscriptcore.getScripts().index(int(scriptNo))
-            status = videoscriptcore.video_scripts[indexSelectedScript].status
-            if hasattr(self, "currentTreeWidget"):
-                if status == "RAW":
-                    children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("black")))
-                elif status == "EDITING":
-                    children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("yellow")))
-                elif status == "COMPLETE":
-                    children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("green")))
-                elif status == "MANUALCOMPLETE":
-                    children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("darkgreen")))
-
+        try:
+            children = self.count_tems()
+            for i in range(len(children)):
+                scriptName = children[i].text(0)
+                scriptNo = scriptName.replace("script", "")
+                indexSelectedScript = videoscriptcore.getScripts().index(int(scriptNo))
+                status = videoscriptcore.video_scripts[indexSelectedScript].status
+                if hasattr(self, "currentTreeWidget"):
+                    if status == "RAW":
+                        children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("black")))
+                    elif status == "EDITING":
+                        children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("yellow")))
+                    elif status == "COMPLETE":
+                        children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("green")))
+                    elif status == "MANUALCOMPLETE":
+                        children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("darkgreen")))
+        except:
+            print("error occured recolouring scripts")
     def count_tems(self):
         count = 0
         iterator = QtWidgets.QTreeWidgetItemIterator(self.treeWidget)  # pass your treewidget as arg
@@ -163,6 +181,20 @@ class ScriptsMenu(QMainWindow):
             iterator += 1
 
         return items
+
+    def refreshScriptsRequest(self):
+        videoscriptcore.video_scripts.clear()
+        self.treeWidget.clear()
+        print(self.scriptFilter.currentText())
+        if self.scriptFilter.currentText() == "Highest Upvotes":
+            client.downloadScripts(settings.amount_scripts_download, "ups")
+        elif self.scriptFilter.currentText() == "Latest Posts":
+            client.downloadScripts(settings.amount_scripts_download, "latest posts")
+        elif self.scriptFilter.currentText() == "Recently Added":
+            client.downloadScripts(settings.amount_scripts_download, "recently added")
+        elif self.scriptFilter.currentText() == "Highest Comments":
+            client.downloadScripts(settings.amount_scripts_download, "comments")
+
     def addRawScriptsToTree(self):
         self.treeWidget.clear()
         for i, vid in enumerate(videoscriptcore.video_scripts):
@@ -177,7 +209,6 @@ class ScriptsMenu(QMainWindow):
                 new_item.setForeground(0, QtGui.QBrush(QtGui.QColor("darkgreen")))
 
         self.treeWidget.expandToDepth(0)
-
     def resetColor(self):
         for i in range(self.treeWidget.topLevelItemCount()):
             #for y in range(self.treeWidget.)

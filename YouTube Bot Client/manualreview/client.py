@@ -31,6 +31,7 @@ logged_in_as = None
 sendingToServer = False
 recievingFromServer = False
 lastPing = None
+addScriptResponse = None
 
 class LoginWindow(QMainWindow):
     login_response = pyqtSignal()
@@ -56,7 +57,7 @@ class LoginWindow(QMainWindow):
             self.close()
             self.rawscriptsmenu = rawscriptsmenu.ScriptsMenu(logged_in_as)
             self.rawscriptsmenu.show()
-            downloadScripts(settings.amount_scripts_download)
+            downloadScripts(settings.amount_scripts_download, "ups")
         else:
             self.status.setText("Status: Login Fail")
 
@@ -123,12 +124,17 @@ def flagscript(scriptno, flagtype):
     payload = (access_key, "flag-scripts", scriptno, flagtype)
     sendToServer(sock, payload)
 
+def addScriptByURL(url):
+    print("%s CLIENT attempting to add script %s" % (datetime.datetime.now(), url))
+    payload = (access_key, "add-script", url)
+    sendToServer(sock, payload)
 
-def downloadScripts(amount):
+
+def downloadScripts(amount, filter):
     global recievingFromServer
     recievingFromServer = True
     print("%s CLIENT requesting scripts" % datetime.datetime.now())
-    payload = (access_key, "request-scripts", amount)
+    payload = (access_key, "request-scripts", amount, filter)
     sendToServer(sock, payload)
 
 def editScript(scriptNo):
@@ -148,8 +154,8 @@ def safeDisconnect():
     exit()
 
 def parseScripts(scripts):
-    scripts = sorted(scripts, key=lambda x: x[4])
-    scripts.reverse()
+    #scripts = sorted(scripts, key=lambda x: x[4])
+    #scripts.reverse()
     for i, script in enumerate(scripts):
         scriptno = script[0]
         subreddit = script[1]
@@ -192,7 +198,7 @@ def sendToServer(server, payloadattachment):
 
 
 def serverResponseListen():
-    global access_key, loginwindowinstance, login_sucess, recievingFromServer
+    global access_key, loginwindowinstance, login_sucess, recievingFromServer, addScriptResponse
     print("Client listen thread active")
     HEADERSIZE = 10
     while True:
@@ -254,6 +260,14 @@ def serverResponseListen():
                     videoscriptcore.updateScriptStatus(script_no, script_status, script_editedby)
                     loginwindowinstance.rawscriptsmenu.update_table.emit()
                     #loginwindowinstance.rawscriptsmenu.addRawScriptsToTree()
+                elif incomingdata[0] == "add-script-success":
+                    success = incomingdata[1]
+                    response = incomingdata[2]
+                    print("%s CLIENT server received response for add script %s %s" % (datetime.datetime.now(), success, response))
+                    addScriptResponse = response
+                    loginwindowinstance.rawscriptsmenu.add_url_response.emit()
+                    #videoscriptcore.updateScriptStatus(script_no, script_status, script_editedby)
+                    #loginwindowinstance.rawscriptsmenu.update_table.emit()
                 elif incomingdata[0] == "script-upload-success":
                     success = incomingdata[1]
                     scriptno = incomingdata[2]
