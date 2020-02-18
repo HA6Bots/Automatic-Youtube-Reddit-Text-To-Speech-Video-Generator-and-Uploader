@@ -211,15 +211,15 @@ def getCompletedScripts(back):
         print(e)
         pass
 
-def getScripts(back):
+def getScripts(back, filter):
     global connection_pool
     connection_object = connection_pool.get_connection()
     cursor = connection_object.cursor()
     cursor.execute("USE youtubebot;")
 
     query = "SELECT scriptno, subreddit, scripttitle, scriptauthor, ups, downs, rawscript, submission_id, status, editedby, num_comments " \
-"FROM scripts WHERE status = 'RAW' or status = 'EDITING' ORDER BY ups DESC " \
-"LIMIT %s;"%back
+"FROM scripts WHERE status = 'RAW' or status = 'EDITING' ORDER BY %s DESC " \
+"LIMIT %s;"%(filter, back)
     cursor.execute(query)
     result = cursor.fetchall()
     results = []

@@ -28,7 +28,9 @@ def getScripts():
 lastUpdate = None
 
 def updateScripts():
+
     while True:
+
         sleep(10)
         if lastUpdate is None:
             getScripts()
@@ -45,6 +47,7 @@ def init():
     socketservervideogenerator.startVideoGeneratorServer()
     thread = Thread(target=updateScripts)
     thread.start()
+
     #youtubequeue.initQueue()
     #socketclient.connectToServer()
     #print(checkValueExists("scriptid", "t5_2qh1i"))
