@@ -146,16 +146,6 @@
      <string>Edited By:</string>
     </property>
    </widget>
-   <widget class="QTableView" name="tableView">
-    <property name="geometry">
-     <rect>
-      <x>685</x>
-      <y>80</y>
-      <width>331</width>
-      <height>201</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="manualexport">
     <property name="geometry">
      <rect>
@@ -211,19 +201,6 @@
      <number>0</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>50</y>
-      <width>141</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Video Generator Queue</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="flagComplete">
     <property name="geometry">
      <rect>
@@ -250,6 +227,85 @@
      <string>Flag Script for Quality</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="addscript">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>170</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add Script</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="scripturl">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>130</y>
+      <width>361</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>100</y>
+      <width>291</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enter Script URL Below</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="addresponse">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>180</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add response:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="scriptFilter">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>501</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Highest Upvotes</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Highest Comments</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Latest Posts</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Recently Added</string>
+     </property>
+    </item>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -257,7 +313,7 @@
      <x>0</x>
      <y>0</y>
      <width>1097</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
