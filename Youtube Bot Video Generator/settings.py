@@ -117,6 +117,20 @@ def loadValues():
     balcon_location = config.get('paths', 'balcon_location')
     youtube_upload_location = config.get('paths', 'youtube_location')
     python27_location = config.get('paths', 'python27_location')
+    if not os.path.exists(tempPath):
+        print("Creating Temp Path: " + tempPath)
+        os.makedirs(tempPath)
+    else:
+        print("Found Temp Path")
 
+    if not os.path.exists(assetPath):
+        print("Creating Assets Path: " + assetPath)
+        os.makedirs(assetPath)
+    else:
+        print("Found Assets Path")
 
+    if not os.path.exists("%s/Verdana.ttf" % assetPath):
+        print("Missing assets please make sure you have all the correct assets: \n %s/Verdana.ttf" % assetPath)
+    else:
+        print("found Verdana.ttf")
 
