@@ -11,8 +11,11 @@ import subprocess
 import re
 import pickle
 import matplotlib
+import settings
 
 # from google.cloud import texttospeech
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=settings.google_tts_location
+from google.cloud import texttospeech
 
 
 
@@ -50,7 +53,7 @@ class Frame():
             self.audio_path2 = "%s/tempaudio%s.wav" % (settings.tempPath, frameno)
         self.audio_clip = None
         self.font = None
-        self.duration = None  # duration of the motherfucking audio clip
+        self.duration = None
         self.generateAudioClip()
         self.saveClip(image)
         self.setFont()
@@ -77,10 +80,29 @@ class Frame():
         self.text = self.text.replace("\"", " ")
         self.text = self.text.replace("\n", " ")
 
-        command = "%s -t \"%s\" -n ScanSoft Daniel_Full_22kHz -w %s" % (settings.balcon_location,
-        self.text, "\"" + self.audio_path2 + "\"")
+        #if not using google tts use balcon as default
+        if settings.use_google_tts:
+            client = texttospeech.TextToSpeechClient()
 
-        process = subprocess.call(command, shell=True)
+            synthesis_input = texttospeech.types.SynthesisInput(text=self.text)
+
+            voice = texttospeech.types.VoiceSelectionParams(
+                language_code='en-US',
+                name='en-US-Wavenet-C',
+                ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+
+            audio_config = texttospeech.types.AudioConfig(
+                audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
+
+            response = client.synthesize_speech(synthesis_input, voice, audio_config)
+
+            with open(self.audio_path2, 'wb') as out:
+                out.write(response.audio_content)
+        else:
+            command = "%s -t \"%s\" -n ScanSoft Daniel_Full_22kHz -w %s" % (settings.balcon_location,
+            self.text, "\"" + self.audio_path2 + "\"")
+
+            process = subprocess.call(command, shell=True)
 
 
 
