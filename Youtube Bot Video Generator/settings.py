@@ -14,6 +14,7 @@ if platform == "win32":
     creds_path = r"%s\\Creds\\" % currentPath
     google_cred_upload = (r"%s\\Creds\\client_secrets.json" % currentPath)
     google_cred_upload_creds = (r"%s\\Creds\\.youtube-upload-credentials.json" % currentPath)
+    google_tts_location = (r"%s\\Creds\\google-text-to-speech-credentials.json" % currentPath)
 
 else:
     tempPath = ("%s/Temp" % currentPath)
@@ -26,6 +27,7 @@ else:
     #google_cred = ("%s/Creds/Royal Reddit Youtube-0c4b02452951.json" % currentPath)
     google_cred_upload = ("%s/Creds/client_secrets.json" % currentPath)
     google_cred_upload_creds = ("%s/Creds/.youtube-upload-credentials.json" % currentPath)
+    google_tts_location = ("%s/Creds/google-text-to-speech-credentials.json" % currentPath)
 
 
 movieFPS = 30
@@ -53,7 +55,7 @@ offsetTextY = 20
 comment_text_color = (215, 218, 220)
 author_text_color = "#595959"
 author_details_color = "#8CB9E6"
-
+use_google_tts = False
 
 config = configparser.RawConfigParser()
 
@@ -89,6 +91,10 @@ def generateConfigFile():
         config.set("paths", 'youtube_location', '')
         config.set("paths", 'python27_location', '')
 
+        config.add_section("other")
+        config.set("other", 'use_google_tts', '')
+
+
 
 
         with open("config.ini", 'w') as configfile:
@@ -100,7 +106,7 @@ def generateConfigFile():
 def loadValues():
     global server_address, server_port, uploads_a_day, random_upload_hour_boundary1,\
         random_upload_hour_boundary2, youtube_api_quota_reset_hour, balcon_location, youtube_upload_location,\
-        python27_location, movieFPS, exportOffline
+        python27_location, movieFPS, exportOffline, use_google_tts
     config = configparser.RawConfigParser()
 
     config.read("config.ini")
@@ -117,6 +123,11 @@ def loadValues():
     balcon_location = config.get('paths', 'balcon_location')
     youtube_upload_location = config.get('paths', 'youtube_location')
     python27_location = config.get('paths', 'python27_location')
+
+    use_google_tts = config.getboolean('other', 'use_google_tts')
+
+
+
     if not os.path.exists(tempPath):
         print("Creating Temp Path: " + tempPath)
         os.makedirs(tempPath)
