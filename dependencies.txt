@@ -28,11 +28,14 @@ _,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
 
 Video Generator Client:
 (pip3 install...)
-    pydub, oauth2client, soundfile, pymediainfo, cv2, moviepy (1.0.0), PIL, numpy, matplotlib, pandas
+    pydub, oauth2client, soundfile, pymediainfo, cv2, moviepy (1.0.0), PIL, numpy, matplotlib, pandas, google-cloud-texttospeech
     
+If using automatic upload:
+
 Python 2.7.15 (Video Generator Client -> config.ini: python27_location = C:\Python27\python.exe)
 (C:\Python27\python.exe -m pip install ...)
     oauth2client
+Otherwise set export_offline = true
     
     
     
