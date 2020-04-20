@@ -170,14 +170,6 @@ def initQueue():
 
 
 if __name__ == "__main__":
-    """
-    main_vid_combined = concatenate_videoclips([VideoFileClip("%s/Intervals/interval1.mp4" % settings.assetPath), VideoFileClip("%s/Intervals/interval2.mp4" % settings.assetPath)])
-    asd = main_vid_combined.set_audio(CompositeAudioClip([AudioFileClip("%s/music-loop.wav" % settings.tempPath), AudioFileClip("%s/music-loop2.wav" % settings.tempPath)]))
-    asd.write_videofile("%s/lol.mp4" % settings.currentPath, threads=4,
-                                      fps=settings.movieFPS, temp_audiofile=settings.currentPath + "\\temp.mp3")
-    #print(asd)
-    #audio_clip = AudioSegment.from_wav("C:/Users/Thomas Shaer/Desktop/Youtube Bot Experimental/Youtube Bot Video Generator/Temp/tempaudio21.wav")
-    """
     if not settings.exportOffline:
         videouploader.get_credentials()
     else:
