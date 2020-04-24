@@ -124,10 +124,6 @@ class VideoEditor(QMainWindow):
         elif keep is False:
             self.animategroup(animation_group_on_change, QtGui.QColor(255, 0, 0))
 
-        content2 = [(videoscriptcore.CommentWrapper("user1", "funny main post", 42),
-                     videoscriptcore.CommentWrapper("user2", "funny reply", 30),
-                     videoscriptcore.CommentWrapper("user3", "more funny reply", 2))]
-
         try:
             stillframe = standardredditformat.StandardReddit("standardredditformat", self.videoScript.videosettings).stillImage(self.scriptWrapper.getCommentInformation(self.mainCommentIndex, self.childCommentIndex))
             height, width, channel = stillframe.shape
@@ -137,7 +133,6 @@ class VideoEditor(QMainWindow):
         except Exception:
             self.imageArea.setText("Rendering Error for Post, skipping")
             print("Need to log this comment")
-            # [(<manualreview.videoscriptcore.CommentWrapper object at 0x0000000013FE9908>,)]
             self.skipComment()
         self.musicCat.setText("Music Category: %s" % self.videoScript.music_type)
 

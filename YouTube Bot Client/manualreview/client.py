@@ -9,6 +9,7 @@ import hashlib
 from manualreview import videoscriptcore
 import datetime
 from manualreview import publishmenu
+import pandas as pd
 from manualreview import settings
 from PyQt5 import QtWidgets
 import configparser
@@ -154,8 +155,16 @@ def safeDisconnect():
     exit()
 
 def parseScripts(scripts):
-    #scripts = sorted(scripts, key=lambda x: x[4])
-    #scripts.reverse()
+    bannedWords = None
+
+    if settings.censorWords:
+        try:
+            bannedWords = pd.read_csv("bannedwords.csv")
+        except Exception as e:
+            print(e)
+
+
+
     for i, script in enumerate(scripts):
         scriptno = script[0]
         subreddit = script[1]
@@ -172,7 +181,19 @@ def parseScripts(scripts):
         for x, commentThread in enumerate(rawscript):
             comment_to_append = ()
             for y, comment in enumerate(commentThread):
-                comment_to_append = comment_to_append + (videoscriptcore.CommentWrapper(comment[0], comment[1], comment[2]), )
+                author_comment = comment[0]
+                text_comment = comment[1]
+
+                individual_words = text_comment.split(" ")
+                for word in individual_words:
+                    for badWord in bannedWords["Banned Word"].tolist():
+                        if word.upper() == badWord:
+                            index = (bannedWords.index[bannedWords["Banned Word"] == word.upper()].tolist())[0]
+                            text_comment = (text_comment.replace(word, bannedWords["Replacement"][index]))
+
+                upvotes_comment = comment[2]
+
+                comment_to_append = comment_to_append + (videoscriptcore.CommentWrapper(author_comment, text_comment, upvotes_comment), )
             newscript.append(comment_to_append)
 
         videoscriptcore.VideoScript(vidno=i, scriptno=scriptno, submission_id=subid, category=subreddit,

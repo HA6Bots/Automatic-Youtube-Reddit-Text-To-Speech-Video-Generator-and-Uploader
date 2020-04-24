@@ -15,6 +15,7 @@ import atexit
 import datetime
 import configparser
 from manualreview import settings
+import pandas as pd
 from datetime import timedelta
 from manualreview import videoscriptcore
 currentPath = os.path.dirname(os.path.realpath(__file__))
@@ -65,6 +66,8 @@ def exit_handler():
 
 
 if __name__ == "__main__":
+    #data = pd.read_csv("bannedwords.csv")
+    #print(data)
     atexit.register(exit_handler)
     settings.generateConfigFile()
     init()

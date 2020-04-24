@@ -9,6 +9,7 @@ currentPath = os.path.dirname(os.path.realpath(__file__))
 
 thumbnailpath = currentPath + "/Thumbnails"
 scriptsaves = currentPath + "/Scriptsaves"
+censorWords = False
 
 config = configparser.ConfigParser()
 
@@ -33,6 +34,7 @@ def generateConfigFile():
         config.set("auto_login", 'password', '')
         config.add_section("other")
         config.set("other", 'amount_scripts', '80')
+        config.set("other", 'censor_words', 'false')
 
         with open("%s\\config.ini" % currentPath, 'w') as configfile:
             config.write(configfile)
@@ -41,7 +43,7 @@ def generateConfigFile():
         loadValues()
 
 def loadValues():
-    global server_address, server_port, auto_login_password, auto_login_user, amount_scripts_download
+    global server_address, server_port, auto_login_password, auto_login_user, amount_scripts_download, censorWords
     config = configparser.ConfigParser()
     config.read("%s\\config.ini" % currentPath)
     server_address = config.get('server_location', 'address')
@@ -49,3 +51,4 @@ def loadValues():
     auto_login_user = config.get('auto_login', 'username')
     auto_login_password = config.get('auto_login', 'password')
     amount_scripts_download = config.getint('other', 'amount_scripts')
+    censorWords = config.getboolean('other', 'censor_words')
