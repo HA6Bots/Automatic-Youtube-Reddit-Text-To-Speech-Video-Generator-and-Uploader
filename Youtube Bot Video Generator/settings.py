@@ -29,6 +29,7 @@ else:
     google_cred_upload_creds = ("%s/Creds/.youtube-upload-credentials.json" % currentPath)
     google_tts_location = ("%s/Creds/google-text-to-speech-credentials.json" % currentPath)
 
+print(google_cred_upload)
 
 movieFPS = 30
 exportOffline = False
@@ -55,14 +56,20 @@ offsetTextY = 20
 comment_text_color = (215, 218, 220)
 author_text_color = "#595959"
 author_details_color = "#8CB9E6"
-use_google_tts = False
 
 config = configparser.RawConfigParser()
 
 server_address = "localhost"
 server_port = 11000
 
+use_balcon = True
+use_google_tts = False
+google_tts_language_code = 'en-US'
+google_tts_voice = 'en-US-Wavenet-D'
+voice_volume = 0.2
+balcon_voice = "ScanSoft Daniel_Full_22kHz"
 uploads_a_day = 6
+background_music_volume = 0.2
 random_upload_hour_boundary1 = 16
 random_upload_hour_boundary2 = 18
 youtube_api_quota_reset_hour = 8
@@ -87,13 +94,22 @@ def generateConfigFile():
         config.set("uploads", 'youtube_api_quota_reset_hour', '8')
 
         config.add_section("paths")
-        config.set("paths", 'balcon_location', '')
-        config.set("paths", 'youtube_location', '')
+        config.set("paths", 'youtube_upload_location', '')
         config.set("paths", 'python27_location', '')
 
-        config.add_section("other")
-        config.set("other", 'use_google_tts', '')
+        config.add_section("balcon_tts")
+        config.set("balcon_tts", 'use_balcon', 'true')
+        config.set("balcon_tts", 'balcon_location_or_commandline', '')
+        config.set("balcon_tts", 'balcon_voice', 'ScanSoft Daniel_Full_22kHz')
 
+        config.add_section("google_tts")
+        config.set("google_tts", 'use_google_tts', 'false')
+        config.set("google_tts", 'google_tts_language_code', 'en-US')
+        config.set("google_tts", 'google_tts_voice', 'en-US-Wavenet-D')
+
+        config.add_section("other")
+        config.set("other", 'background_music_volume', '0.2')
+        config.set("other", 'voice_volume', '0.2')
 
 
 
@@ -106,7 +122,7 @@ def generateConfigFile():
 def loadValues():
     global server_address, server_port, uploads_a_day, random_upload_hour_boundary1,\
         random_upload_hour_boundary2, youtube_api_quota_reset_hour, balcon_location, youtube_upload_location,\
-        python27_location, movieFPS, exportOffline, use_google_tts
+        python27_location, movieFPS, exportOffline, use_google_tts, balcon_voice, use_balcon, google_tts_language_code, google_tts_voice, background_music_volume, voice_volume
     config = configparser.RawConfigParser()
 
     config.read("config.ini")
@@ -120,11 +136,19 @@ def loadValues():
     random_upload_hour_boundary2 = config.getint('uploads', 'random_upload_hour_boundary2')
     youtube_api_quota_reset_hour = config.getint('uploads', 'youtube_api_quota_reset_hour')
 
-    balcon_location = config.get('paths', 'balcon_location')
-    youtube_upload_location = config.get('paths', 'youtube_location')
+    youtube_upload_location = config.get('paths', 'youtube_upload_location')
     python27_location = config.get('paths', 'python27_location')
 
-    use_google_tts = config.getboolean('other', 'use_google_tts')
+    use_balcon = config.getboolean('balcon_tts', 'use_balcon')
+    balcon_location = config.get('balcon_tts', 'balcon_location_or_commandline')
+    balcon_voice = config.get('balcon_tts', 'balcon_voice')
+
+    use_google_tts = config.getboolean('google_tts', 'use_google_tts')
+    google_tts_language_code = config.get('google_tts', 'google_tts_language_code')
+    google_tts_voice = config.get('google_tts', 'google_tts_voice')
+
+    background_music_volume = config.getfloat('other', 'background_music_volume')
+    voice_volume = config.getfloat('other', 'voice_volume')
 
 
 

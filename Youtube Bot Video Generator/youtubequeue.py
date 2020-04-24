@@ -94,7 +94,7 @@ def canUpload():
 def tickThread():
     global waitTill
     while True:
-        sleep(30)
+        sleep(5)
         if generatorclient.last_upload_times is None and not generatorclient.isRequestingScripts:
             print("No update times available... requesting more")
             generatorclient.getLastUploadedScripts()
@@ -170,8 +170,32 @@ def initQueue():
 
 
 if __name__ == "__main__":
+
+    begin = True
+
     if not settings.exportOffline:
         videouploader.get_credentials()
     else:
         print("Video Generator launching in export offline mode")
-    initQueue()
+
+    if settings.use_balcon and settings.use_google_tts:
+        print("You have selected to use both google tts and balcon tts! Please only select one in the config file!")
+        begin = False
+
+    if not settings.use_balcon and not settings.use_google_tts:
+        print("You have not selected any tts options in the config file!"
+              " Please set either google tts or balcon tts to true! Not both!")
+        begin = False
+
+    if settings.use_balcon:
+        command = "%s -t \"%s\" -n %s" % (settings.balcon_location,
+                                                "Balcon Voice Success", settings.balcon_voice)
+
+        process = subprocess.call(command, shell=True)
+        if process != 0:
+            print("Balcon not found. This will work when the following command works in your commandline: %s" % ("%s -t \"%s\" -n %s" % (settings.balcon_location,
+                                                "Balcon Voice Test", settings.balcon_voice)))
+            begin = False
+
+    if begin:
+        initQueue()
