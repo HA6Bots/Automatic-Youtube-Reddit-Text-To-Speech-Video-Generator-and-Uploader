@@ -32,13 +32,13 @@ class VideoScript():
         self.scriptno = scriptno
         vidsaves = os.listdir(settings.scriptsaves)
         self.scriptWrapper = ScriptWrapper(self.commentInformation, self.title, self.scriptno)
-        for vid in vidsaves:
-            if vid == "rawvideo%s.save" % self.scriptno:
-                path = settings.scriptsaves + "\\" + vid
-                with open(path, 'rb') as pickle_file:
-                    script = pickle.load(pickle_file)
-                    self.scriptWrapper = script
-                    print("Found raw save for script %s" % scriptno)
+        # for vid in vidsaves:
+        #     if vid == "rawvideo%s.save" % self.scriptno:
+        #         path = settings.scriptsaves + "\\" + vid
+        #         with open(path, 'rb') as pickle_file:
+        #             script = pickle.load(pickle_file)
+        #             self.scriptWrapper = script
+        #             print("Found raw save for script %s" % scriptno)
 
         self.thumbnail = None
         self.charactersAmount = None
@@ -121,6 +121,9 @@ class ScriptWrapper():
                 newThread = newThread + (False,)
 
         self.scriptMap[mainCommentIndex] = newThread
+
+    def setCommentData(self, x, y, text):
+        self.rawScript[x][y].text = text
 
     def getCommentData(self, x, y):
         return self.rawScript[x][y]

@@ -2,6 +2,11 @@ import os
 import sys
 currentPath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(currentPath.replace("\manualreview", ""))
+for path in sys.path:
+    print(path)
+
+
+
 from manualreview import rawscriptsmenu
 from PyQt5 import QtWidgets
 from manualreview import client
@@ -36,8 +41,9 @@ class App():
 sys._excepthook = sys.excepthook
 def exception_hook(exctype, value, traceback):
     sys._excepthook(exctype, value, traceback)
-    print("loooooooooooool")
+    print("nice exit")
     sys.exit(1)
+
 sys.excepthook = exception_hook
 
 def init():

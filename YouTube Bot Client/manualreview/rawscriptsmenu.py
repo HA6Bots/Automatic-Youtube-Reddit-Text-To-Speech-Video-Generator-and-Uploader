@@ -25,9 +25,8 @@ class ScriptsMenu(QMainWindow):
         self.treeWidget.currentItemChanged.connect(self.changeSelected)
         self.startEditing.clicked.connect(self.startVideoEditor)
         self.refreshScripts.clicked.connect(self.refreshScriptsRequest)
-        self.flagComplete.clicked.connect(lambda : self.flagScript("MANUALCOMPLETE"))
+        self.flagQuality.clicked.connect(lambda : self.flagScript("QUALITY"))
         self.addscript.clicked.connect(self.addScriptFromURL)
-        self.flagscriptquality.clicked.connect(lambda : self.flagScript("BAD"))
         self.update_table.connect(self.updateColors)
         self.add_url_response.connect(self.addedNewScript)
         self.reset_editing_status.connect(self.resetEditingStatus)
@@ -50,16 +49,15 @@ class ScriptsMenu(QMainWindow):
 
     def flagScript(self, flagtype):
         if self.currentScriptSelected is not None:
-            if flagtype == "MANUALCOMPLETE":
-                title = "Warning, you are about to flag a Script"
-                message = "You are about to flag script %s with a MANUALCOMPLETE tag \n"
-                message += "A MANUALCOMPLETE tag means that this script " \
-                           "has been completed outside of our system, " \
-                           "and that there is no longer any need for it to appear here"
+            if flagtype == "QUALITY":
+                title = "Warning, you are about to flag a script for quality"
+                message = "You are about to flag this script with a QUALITY tag \n"
+                message += "A QUALITY tag means that this script " \
+                           "will no longer show up here "
                 self.createPopup("Warning", QMessageBox.Information, title, message)
                 QMessageBox.Ok | QMessageBox.Cancel
                 if self.retMsg == QMessageBox.Ok:
-                    client.flagscript(self.currentScriptSelected, "MANUALCOMPLETE")
+                    client.flagscript(self.currentScriptSelected, "QUALITY")
                 elif self.retMsg == QMessageBox.Cancel:
                     pass
         else:
@@ -95,23 +93,23 @@ class ScriptsMenu(QMainWindow):
                     if status == "RAW":
                         self.currentTreeWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("black")))
                         self.startEditing.setEnabled(True)
-                        self.flagComplete.setEnabled(True)
-                        self.flagscriptquality.setEnabled(True)
+                        self.flagQuality.setEnabled(True)
                     elif status == "EDITING":
                         self.currentTreeWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("yellow")))
                         self.startEditing.setEnabled(False)
-                        self.flagComplete.setEnabled(False)
-                        self.flagscriptquality.setEnabled(False)
+                        self.flagQuality.setEnabled(False)
                     elif status == "COMPLETE":
                         self.currentTreeWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("green")))
                         self.startEditing.setEnabled(False)
-                        self.flagComplete.setEnabled(False)
-                        self.flagscriptquality.setEnabled(False)
+                        self.flagQuality.setEnabled(False)
                     elif status == "MANUALCOMPLETE":
                         self.currentTreeWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("darkgreen")))
                         self.startEditing.setEnabled(False)
-                        self.flagComplete.setEnabled(False)
-                        self.flagscriptquality.setEnabled(False)
+                        self.flagQuality.setEnabled(False)
+                    elif status == "QUALITY":
+                        self.currentTreeWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("red")))
+                        self.startEditing.setEnabled(False)
+                        self.flagQuality.setEnabled(False)
                     if self.isEditing:
                         self.startEditing.setEnabled(False)
 
@@ -161,6 +159,8 @@ class ScriptsMenu(QMainWindow):
                         children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("green")))
                     elif status == "MANUALCOMPLETE":
                         children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("darkgreen")))
+                    elif status == "QUALITY":
+                        children[i].setForeground(0, QtGui.QBrush(QtGui.QColor("red")))
         except:
             print("error occured recolouring scripts")
     def count_tems(self):
@@ -185,7 +185,6 @@ class ScriptsMenu(QMainWindow):
     def refreshScriptsRequest(self):
         videoscriptcore.video_scripts.clear()
         self.treeWidget.clear()
-        print(self.scriptFilter.currentText())
         if self.scriptFilter.currentText() == "Highest Upvotes":
             client.downloadScripts(settings.amount_scripts_download, "ups")
         elif self.scriptFilter.currentText() == "Latest Posts":

@@ -59,14 +59,14 @@
    <widget class="QPushButton" name="quit">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>230</x>
       <y>120</y>
-      <width>171</width>
+      <width>121</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Quit Like The Little Bitch You Are</string>
+     <string>Quit</string>
     </property>
    </widget>
    <widget class="QLabel" name="status">
@@ -89,7 +89,7 @@
      <x>0</x>
      <y>0</y>
      <width>481</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

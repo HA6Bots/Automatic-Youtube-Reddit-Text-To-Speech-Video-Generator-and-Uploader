@@ -162,6 +162,7 @@ class VideoEditor(QMainWindow):
         self.updateDisplay(False)
 
     def keepComment(self):
+        self.scriptWrapper.setCommentData(self.mainCommentIndex, self.childCommentIndex, self.commentDisplay.toPlainText())
         for i in range(self.childCommentIndex, -1, -1):
             self.scriptWrapper.keep(self.mainCommentIndex, i)
         self.updateColors()
@@ -185,8 +186,8 @@ class VideoEditor(QMainWindow):
 
     def updateTextView(self, commentwrapper):
         text = commentwrapper.text
-        self.textBrowser.clear()
-        self.textBrowser.append(text)
+        self.commentDisplay.clear()
+        self.commentDisplay.append(text)
 
     def addCommentInformation(self):
         self.treeWidget.clear()
