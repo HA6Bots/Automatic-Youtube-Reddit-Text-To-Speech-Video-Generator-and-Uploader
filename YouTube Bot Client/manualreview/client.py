@@ -184,12 +184,13 @@ def parseScripts(scripts):
                 author_comment = comment[0]
                 text_comment = comment[1]
 
-                individual_words = text_comment.split(" ")
-                for word in individual_words:
-                    for badWord in bannedWords["Banned Word"].tolist():
-                        if word.upper() == badWord:
-                            index = (bannedWords.index[bannedWords["Banned Word"] == word.upper()].tolist())[0]
-                            text_comment = (text_comment.replace(word, bannedWords["Replacement"][index]))
+                if settings.censorWords:
+                    individual_words = text_comment.split(" ")
+                    for word in individual_words:
+                        for badWord in bannedWords["Banned Word"].tolist():
+                            if word.upper() == badWord:
+                                index = (bannedWords.index[bannedWords["Banned Word"] == word.upper()].tolist())[0]
+                                text_comment = (text_comment.replace(word, bannedWords["Replacement"][index]))
 
                 upvotes_comment = comment[2]
 
