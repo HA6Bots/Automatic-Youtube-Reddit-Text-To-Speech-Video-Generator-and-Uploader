@@ -27,7 +27,7 @@
    <widget class="QPushButton" name="genVid">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>800</x>
       <y>600</y>
       <width>231</width>
       <height>51</height>
@@ -382,19 +382,6 @@
      <string>Open Thumbnail Folder</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="exportVideoFile">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>600</y>
-      <width>211</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Export Video File</string>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="tags">
     <property name="geometry">
      <rect>
@@ -464,7 +451,7 @@
      <x>0</x>
      <y>0</y>
      <width>1180</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

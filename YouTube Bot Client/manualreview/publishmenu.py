@@ -209,15 +209,12 @@ class PublishMenu(QMainWindow):
 
     def generateThumbnail(self):
         if self.videoScript.videoType == 'standardredditformat':
-            if not os.path.exists(self.thumbnailPath):
-                print("Generating new thumbnail %s" % self.thumbnailPath)
-                thumbnail_content = [(videoscriptcore.CommentWrapper(self.videoScript.author, self.videoScript.title, self.videoScript.upvotes, self.videoScript.amount_comments), )]
-                thumbnail = standardredditformat.StandardReddit("standardredditformat", self.videoScript.videosettings).renderThumbnail(thumbnail_content)
-                cv2.imwrite(self.thumbnailPath, thumbnail)
-                self.thumbnailfolderpath.setText(self.thumbnailPath)
-                self.changeThumbnail(thumbnail)
-            else:
-                print("Thumbnail found at %s" % self.thumbnailPath)
+            print("Generating new thumbnail %s" % self.thumbnailPath)
+            thumbnail_content = [(videoscriptcore.CommentWrapper(self.videoScript.author, self.videoScript.title, self.videoScript.upvotes, self.videoScript.amount_comments), )]
+            thumbnail = standardredditformat.StandardReddit("standardredditformat", self.videoScript.videosettings).renderThumbnail(thumbnail_content)
+            cv2.imwrite(self.thumbnailPath, thumbnail)
+            self.thumbnailfolderpath.setText(self.thumbnailPath)
+            self.changeThumbnail(thumbnail)
 
     def openThumbnailPath(self):
         if platform == "Windows":
@@ -287,11 +284,8 @@ class PublishMenu(QMainWindow):
         self.descriptionDisplay.setText(self.descriptionEdit.toPlainText())
         if len(self.tags.toPlainText()) > 450 or len(self.editTitle.text()) > 100:
             self.genVid.setEnabled(False)
-            self.exportVideoFile.setEnabled(False)
         else:
             self.genVid.setEnabled(True)
-            self.exportVideoFile.setEnabled(True)
-        pass
 
     def mouseMoveEvent(self, event):
         self.updateDisplay()
