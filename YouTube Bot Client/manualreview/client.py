@@ -34,6 +34,8 @@ recievingFromServer = False
 lastPing = None
 addScriptResponse = None
 
+musicTypes = None
+
 class LoginWindow(QMainWindow):
     login_response = pyqtSignal()
 
@@ -201,7 +203,7 @@ def parseScripts(scripts):
                                     title=title,
                                     author=author, upvotes=ups, comments=downs,
                                     videotype="standardredditformat",
-                                    commentInformation=newscript, music_type="funny", status=status, editedby=editedby, commentsamount=comments_amount)
+                                    commentInformation=newscript, music_type="Funny", status=status, editedby=editedby, commentsamount=comments_amount)
     loginwindowinstance.rawscriptsmenu.addRawScriptsToTree()
 
 
@@ -220,7 +222,7 @@ def sendToServer(server, payloadattachment):
 
 
 def serverResponseListen():
-    global access_key, loginwindowinstance, login_sucess, recievingFromServer, addScriptResponse
+    global access_key, loginwindowinstance, login_sucess, recievingFromServer, addScriptResponse, musicTypes
     print("Client listen thread active")
     HEADERSIZE = 10
     while True:
@@ -259,6 +261,7 @@ def serverResponseListen():
                         loginwindowinstance.login_response.emit()
                 elif incomingdata[0] == "scripts-return":
                     data = incomingdata[1]
+                    musicTypes = incomingdata[2]
                     print("%s CLIENT received %s scripts" % (datetime.datetime.now(), len(data)))
                     parseScripts(data)
                     break

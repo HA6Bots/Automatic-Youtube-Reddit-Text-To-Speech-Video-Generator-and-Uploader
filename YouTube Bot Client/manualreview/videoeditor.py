@@ -50,8 +50,15 @@ class VideoEditor(QMainWindow):
         self.safeClose = False
         self.nightMode = True
         self.setConstants()
+        self.musicTypes.clear()
+        self.musicTypes.addItems(client.musicTypes)
+        self.musicTypes.currentTextChanged.connect(self.updateMusicType)
+        #self.videoScript.music_type
         #self.videoPublishWindow = publishmenu.PublishMenu(self.videoScript)
         #self.videoPublishWindow.show()
+
+    def updateMusicType(self):
+        self.videoScript.music_type = self.musicTypes.currentText()
 
     def openValueEditor(self):
         self.valueEditor = ValueEditor(self.videoScript)
