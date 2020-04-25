@@ -33,6 +33,18 @@ def loadVideoScripts():
 
 
 def parseScripts():
+    for musicType in generatorclient.musicTypes:
+        if not os.path.exists(settings.assetPath + "/Music/%s" % musicType):
+            print("Creating Music Path for %s: %s" % (musicType, settings.assetPath + "/Music/%s" % musicType))
+            os.makedirs(settings.assetPath + "/Music/%s" % musicType)
+        if len(os.listdir(settings.assetPath + "/Music/%s/" % musicType)) == 0:
+            print("Music folder %s is empty! Please add mp3 files into this folder and restart the bot!" % (settings.assetPath + "/Music/%s/" % musicType))
+            while True:
+                sleep(10)
+                print("Music folder %s is empty! Please add mp3 files into this folder and restart the bot!" % (
+                            settings.assetPath + "/Music/%s/" % musicType))
+                pass
+
     if scriptIBuffer:
         for script in scriptIBuffer:
             scriptno = script[0]

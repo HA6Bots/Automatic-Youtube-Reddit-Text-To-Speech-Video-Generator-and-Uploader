@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import settings
 from collections import namedtuple
+import os
 import random
 
 class VideoFormat(ABC):
@@ -14,9 +15,8 @@ class VideoFormat(ABC):
         self.settings = namedtuple('x', dictionary.keys())(*dictionary.values())
 
     def selectMusic(self, musictype):
-        if musictype == "funny":
-            randInterval = random.randint(1, 38)
-            self.music = ("%s/Music/Funny/funny%s.mp3" % (settings.assetPath, randInterval))
+        self.music = "%s/Music/%s/%s" % (settings.assetPath, musictype, random.choice(os.listdir("%s/Music/%s/" % (settings.assetPath, musictype))))
+        print(self.music)
 
     @abstractmethod
     def stillImage(self, replies):

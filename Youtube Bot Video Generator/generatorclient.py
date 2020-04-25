@@ -5,6 +5,8 @@ import pickle
 import hashlib
 import youtubequeue
 
+musicTypes = None
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 last_upload_times = None
@@ -56,7 +58,7 @@ def connectToServer():
 
 
 def downloadListenThread():
-    global last_upload_times, isRequestingScripts
+    global last_upload_times, isRequestingScripts, musicTypes
     print("Client listen thread active")
     HEADERSIZE = 10
     while True:
@@ -86,6 +88,7 @@ def downloadListenThread():
                     pass
                 elif incomingdata[0] == "script-send-to-generator":
                     scripts = incomingdata[1]
+                    musicTypes = incomingdata[2]
                     print("%s VID GEN CLIENT received %s scripts" % (
                     datetime.datetime.now(), len(scripts)))
                     for script in scripts:

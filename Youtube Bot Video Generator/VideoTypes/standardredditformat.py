@@ -339,3 +339,5 @@ class StandardReddit(videoformat.VideoFormat):
                         movie.addFrameWithTransition(image_path, audio_path, "%s/Intervals/%s" % (settings.assetPath, random.choice(os.listdir("%s/Intervals/" % settings.assetPath))))
                     else:
                         movie.addFrameWithTransitionAndPause(image_path, audio_path, "%s/Intervals/standard.mp4" % settings.assetPath, 1000)
+                    #print("end frame: %s" % text)
+

@@ -87,9 +87,9 @@ class Frame():
             synthesis_input = texttospeech.types.SynthesisInput(text=self.text)
 
             voice = texttospeech.types.VoiceSelectionParams(
-                language_code='en-US',
-                name='en-US-Wavenet-C',
-                ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+                language_code=settings.google_tts_language_code,
+                name=settings.google_tts_voice,
+                ssml_gender=texttospeech.enums.SsmlVoiceGender.MALE)
 
             audio_config = texttospeech.types.AudioConfig(
                 audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
@@ -98,9 +98,10 @@ class Frame():
 
             with open(self.audio_path2, 'wb') as out:
                 out.write(response.audio_content)
-        else:
-            command = "%s -t \"%s\" -n ScanSoft Daniel_Full_22kHz -w %s" % (settings.balcon_location,
-            self.text, "\"" + self.audio_path2 + "\"")
+
+        if settings.use_balcon:
+            command = "%s -t \"%s\" -n %s -w %s" % (settings.balcon_location,
+            self.text, settings.balcon_voice, "\"" + self.audio_path2 + "\"")
 
             process = subprocess.call(command, shell=True)
 
