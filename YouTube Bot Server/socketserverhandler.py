@@ -144,16 +144,16 @@ def clientTick(client):
                             filter = incomingdata[3]
                             if filter == "ups":
                                 data = database.getScripts(amount, "ups")
-                                sendToClient(client_connection, ("scripts-return", data))
+                                sendToClient(client_connection, ("scripts-return", data, settings.music_types))
                             elif filter == "latest posts":
                                 data = database.getScripts(amount, "timecreated")
-                                sendToClient(client_connection, ("scripts-return", data))
+                                sendToClient(client_connection, ("scripts-return", data, settings.music_types))
                             elif filter == "recently added":
                                 data = database.getScripts(amount, "timegathered")
-                                sendToClient(client_connection, ("scripts-return", data))
+                                sendToClient(client_connection, ("scripts-return", data, settings.music_types))
                             elif filter == "comments":
                                 data = database.getScripts(amount, "num_comments")
-                                sendToClient(client_connection, ("scripts-return", data))
+                                sendToClient(client_connection, ("scripts-return", data, settings.music_types))
 
                             pass
                         else:

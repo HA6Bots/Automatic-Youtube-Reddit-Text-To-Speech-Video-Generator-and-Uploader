@@ -88,7 +88,7 @@ def videoGeneratorTick():
                     current_scripts_in_generator = incomingdata[1]
                     print("%s VID GEN SERVER request scripts: current scripts %s" % (datetime.datetime.now(), current_scripts_in_generator))
                     scripts = retrieveScripts(current_scripts_in_generator)
-                    sendToClient(client_connection, ('script-send-to-generator', scripts))
+                    sendToClient(client_connection, ('script-send-to-generator', scripts, settings.music_types))
                 elif "flag-scripts" == incomingdata[0]:
                     scriptno = incomingdata[1]
                     flagtype = incomingdata[2]

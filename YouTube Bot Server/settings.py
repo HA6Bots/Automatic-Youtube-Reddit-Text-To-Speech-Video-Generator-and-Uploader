@@ -16,6 +16,7 @@ reddit_minimum_comments = 1000
 reddit_comments_per_post = 30
 reddit_replies_per_comment = 4
 reddit_amount_posts = 45
+music_types = ["Funny", "Sad", "Soothing"]
 
 database_host = ""
 database_user = ""
@@ -46,6 +47,10 @@ def generateConfigFile():
         config.set("database", 'user', '')
         config.set("database", 'password', '')
 
+        config.add_section("videos")
+        config.set("videos", 'musictypes', 'Funny, Sad, Soothing')
+
+
         with open("config.ini", 'w') as configfile:
             config.write(configfile)
     else:
@@ -56,7 +61,7 @@ def loadValues():
     global server_location, server_port, server_port_vid_gen, reddit_client_id, reddit_client_secret,\
         reddit_client_password, reddit_client_user_agent, reddit_client_username, database_host,\
         database_user, database_password, reddit_minimum_comments, reddit_comments_per_post,\
-        reddit_replies_per_comment, reddit_amount_posts, reddit_amount_posts
+        reddit_replies_per_comment, reddit_amount_posts, reddit_amount_posts, music_types
     config = configparser.RawConfigParser()
 
     config.read("config.ini")
@@ -77,5 +82,7 @@ def loadValues():
     database_host = config.get('database', 'host')
     database_user = config.get('database', 'user')
     database_password = config.get('database', 'password')
+
+    music_types = config.get('videos', 'musictypes').replace(" ", "").split(",")
 
 
