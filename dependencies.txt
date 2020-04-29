@@ -41,6 +41,7 @@ Otherwise set export_offline = true
     
 (If using Linux be sure to install the following with wine) 
 https://www.reddit.com/r/linux/comments/6z41qb/my_text_to_speech_tts_solution_wine_microsoft/
+winetricks speedsdk
 
 Balabolka (command line utility) http://www.cross-plus-a.com/balabolka.htm 
 Daniel MLG Softscan https://www.youtube.com/watch?v=yj3dhTnyotY
