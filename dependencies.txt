@@ -14,7 +14,7 @@ _,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
 
 Client:
 (pip3 install...)
-    PyQt5, python-cv2, Pillow, numpy
+    PyQt5, opencv-python, Pillow, numpy
 
 _,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,__,.-'~'-.,_
 
