@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1225</width>
+    <height>1154</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>90</y>
+      <width>261</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Comment</string>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>Comment1</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Reply1</string>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Reply2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Reply3</string>
+      </property>
+     </item>
+    </item>
+    <item>
+     <property name="text">
+      <string>Comment2</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Reply1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Reply2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Reply3</string>
+      </property>
+     </item>
+    </item>
+   </widget>
+   <widget class="QTextEdit" name="commentDisplay">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>210</y>
+      <width>481</width>
+      <height>131</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>251</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video Script no.3</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textView">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>150</y>
+      <width>251</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Text View: Comment2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>520</y>
+      <width>261</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Comment Thread Video Frame</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="keep">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>360</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Keep (F3)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="skip">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>360</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Skip (F4)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="estvidtime">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>350</y>
+      <width>331</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Estimated Video Time</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="totalaudiolines">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>370</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total Audio Lines:</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>210</y>
+      <width>20</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="author">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>170</y>
+      <width>241</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Author</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="upvotes">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>190</y>
+      <width>221</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Upvotes</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="avgwordsmin">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>160</y>
+      <width>271</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Avg Words/min: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="commentthreads">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>270</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Comment Threads:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="timebetweencommentthread">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>180</y>
+      <width>361</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Time Between Comment Thread:</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>200</y>
+      <width>361</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>230</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video Information</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="videoquestion">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>10</y>
+      <width>811</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video Question</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Line" name="line_3">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>0</y>
+      <width>20</width>
+      <height>531</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="wordscomment">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>190</y>
+      <width>161</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Words:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="subreddit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>361</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>r/</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="commentamount">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>290</y>
+      <width>311</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Comments:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="totalwords">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>310</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total Words:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="publish">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>410</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Publish Video</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="imageArea">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>570</y>
+      <width>1201</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Image Area</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="musicCat">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>483</y>
+      <width>231</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Music Category:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="totalcharacters">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>330</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total Characters:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="characterscomment">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>190</y>
+      <width>161</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Characters:</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>510</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>420</y>
+      <width>271</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video Music Type</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="musicTypes">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>450</y>
+      <width>241</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1225</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuRender_Settings">
+    <property name="title">
+     <string>Render Settings</string>
+    </property>
+    <addaction name="editrendervalues"/>
+    <addaction name="nightmode"/>
+   </widget>
+   <addaction name="menuRender_Settings"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="editrendervalues">
+   <property name="text">
+    <string>Edit Global Values</string>
+   </property>
+  </action>
+  <action name="nightmode">
+   <property name="text">
+    <string>Toggle Night Mode</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
