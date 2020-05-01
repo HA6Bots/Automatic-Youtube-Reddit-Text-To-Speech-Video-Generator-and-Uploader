@@ -35,6 +35,8 @@ If using automatic upload:
 Python 2.7.15 (Video Generator Client -> config.ini: python27_location = C:\Python27\python.exe)
 (C:\Python27\python.exe -m pip install ...)
     oauth2client
+    google-api-python-client
+    
 Otherwise set export_offline = true
     
     
