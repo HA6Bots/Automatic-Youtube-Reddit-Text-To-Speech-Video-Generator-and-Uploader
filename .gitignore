@@ -2,3 +2,5 @@ YouTube Bot Client\config.ini
 YouTube Bot Server\config.ini
 YouTube Bot VIdeo Generator/config.ini
 *.ini
+YouTube Bot Server/.idea
+YouTube Bot Server/.__pycache__ 
