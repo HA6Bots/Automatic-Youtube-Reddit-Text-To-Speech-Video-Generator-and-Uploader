@@ -5,9 +5,10 @@ YouTube Bot Server/.idea
 YouTube Bot Server/.__pycache__ 
 YouTube Bot Client/.idea
 YouTube Bot Client/.__pycache__ 
-YouTube Bot Video Generator/Assets
 *.pyc
+*.mp3
+*.mp4
+*.wav
 C:\Users\Thomas\Desktop\Youtube Bot Experimental\GitHub\Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader\YouTube Bot Server\config.ini
 C:\Users\Thomas\Desktop\Youtube Bot Experimental\GitHub\Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader\YouTube Bot Server\.idea
 C:\Users\Thomas\Desktop\Youtube Bot Experimental\GitHub\Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader\YouTube Bot Server\__pycache__
-C:\Users\Thomas\Desktop\Youtube Bot Experimental\GitHub\Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader\YouTube Bot Video Generator\Assets
