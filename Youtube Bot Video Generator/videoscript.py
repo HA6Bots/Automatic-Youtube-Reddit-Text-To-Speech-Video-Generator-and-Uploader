@@ -48,15 +48,22 @@ class VideoScriptEngine():
         if not self.isRendered:
             print("Started Rendering Script %s" % self.scriptno)
             imageframe.deleteAllFilesInPath(settings.tempPath)
-            video_format = standardredditformat.StandardReddit("shit", self.video_settings, self.music_type)
-            formatted_script = imageframe.parseScript(self.final_script)
-            newMovie = generatemovie.Movie(video_format, formatted_script,
-                                           (self.author, self.scripttitle, self.ups), self.scriptno)
-            export_location = newMovie.renderVideo()
-            cv2.imwrite(export_location + "/thumbnail.png", cv2.cvtColor(self.thumbnail, cv2.COLOR_RGB2BGR))
-            writeTextToFile(export_location + "/description.txt", self.youtube_description)
-            writeTextToFile(export_location + "/youtubetitle.txt", self.youtube_title)
-            writeTextToFile(export_location + "/youtubetags.txt", self.youtube_tags)
+            try:
+                video_format = standardredditformat.StandardReddit("shit", self.video_settings, self.music_type)
+                formatted_script = imageframe.parseScript(self.final_script)
+                newMovie = generatemovie.Movie(video_format, formatted_script,
+                                               (self.author, self.scripttitle, self.ups), self.scriptno)
+                export_location = newMovie.renderVideo()
+                try:
+                    cv2.imwrite(export_location + "/thumbnail.png", cv2.cvtColor(self.thumbnail, cv2.COLOR_RGB2BGR))
+                except Exception:
+                    pass
+                writeTextToFile(export_location + "/description.txt", self.youtube_description)
+                writeTextToFile(export_location + "/youtubetitle.txt", self.youtube_title)
+                writeTextToFile(export_location + "/youtubetags.txt", self.youtube_tags)
+            except Exception as e:
+                print(e)
+                print("Sorry, a error occured rendering this video. Skipping it")
             self.isRendered = True
             self.save()
             if settings.exportOffline:
