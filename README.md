@@ -1,4 +1,4 @@
-# HA6Bot's Automatic-Youtube-Reddit-Text-To-Speech-Video-Generator-and-Uploader
+# HA6Bot's Automatic-Reddit-Text-To-Speech-Video-Generator-and-Uploader
 
 Following the recent YouTube trend in “Reddit to Text-To-Speech” YouTube Videos I embarked on a project to create a program that can automate the process of receiving, generating and uploading these videos to YouTube with as little intervention as possible. It took 4 months to finish the project and is comprised of 3 separate programs that work simultaneously in order to complete this task.
 
