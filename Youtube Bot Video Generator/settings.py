@@ -49,6 +49,7 @@ comment_author_factor = 0.9
 offsetYReplyAmount = 30
 thickness = 1
 preferred_font_size = 30
+noSpeech = False
 offsetTextX = 0
 offsetTextY = 20
 # night-mode text color (215, 218, 220)
@@ -76,6 +77,8 @@ youtube_api_quota_reset_hour = 8
 balcon_location = "wine /home/royalreddit/Desktop/balcon/balcon.exe"
 youtube_upload_location = ""
 python27_location = ""
+
+estWordPerMinute = 175
 
 def generateConfigFile():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -110,6 +113,8 @@ def generateConfigFile():
         config.add_section("other")
         config.set("other", 'background_music_volume', '0.2')
         config.set("other", 'voice_volume', '0.2')
+        config.set("other", 'disable_speech', 'False')
+        config.set("other", 'est_word_per_minute', '175')
 
 
 
@@ -122,7 +127,7 @@ def generateConfigFile():
 def loadValues():
     global server_address, server_port, uploads_a_day, random_upload_hour_boundary1,\
         random_upload_hour_boundary2, youtube_api_quota_reset_hour, balcon_location, youtube_upload_location,\
-        python27_location, movieFPS, exportOffline, use_google_tts, balcon_voice, use_balcon, google_tts_language_code, google_tts_voice, background_music_volume, voice_volume
+        python27_location, movieFPS, exportOffline, use_google_tts, balcon_voice, use_balcon, google_tts_language_code, google_tts_voice, background_music_volume, voice_volume, noSpeech, estWordPerMinute
     config = configparser.RawConfigParser()
 
     config.read("config.ini")
@@ -149,6 +154,8 @@ def loadValues():
 
     background_music_volume = config.getfloat('other', 'background_music_volume')
     voice_volume = config.getfloat('other', 'voice_volume')
+    noSpeech = config.getboolean('other', 'disable_speech')
+    estWordPerMinute = config.getint('other', 'est_word_per_minute')
 
 
 

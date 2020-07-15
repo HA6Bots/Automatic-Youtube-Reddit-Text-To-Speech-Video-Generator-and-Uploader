@@ -9,6 +9,8 @@ import platform
 from subprocess import *
 import subprocess
 import re
+from pydub import AudioSegment
+
 import pickle
 import matplotlib
 import settings
@@ -81,29 +83,35 @@ class Frame():
         self.text = self.text.replace("\n", " ")
 
         #if not using google tts use balcon as default
-        if settings.use_google_tts:
-            client = texttospeech.TextToSpeechClient()
+        if not settings.noSpeech:
+            if settings.use_google_tts:
+                client = texttospeech.TextToSpeechClient()
 
-            synthesis_input = texttospeech.types.SynthesisInput(text=self.text)
+                synthesis_input = texttospeech.types.SynthesisInput(text=self.text)
 
-            voice = texttospeech.types.VoiceSelectionParams(
-                language_code=settings.google_tts_language_code,
-                name=settings.google_tts_voice,
-                ssml_gender=texttospeech.enums.SsmlVoiceGender.MALE)
+                voice = texttospeech.types.VoiceSelectionParams(
+                    language_code=settings.google_tts_language_code,
+                    name=settings.google_tts_voice,
+                    ssml_gender=texttospeech.enums.SsmlVoiceGender.MALE)
 
-            audio_config = texttospeech.types.AudioConfig(
-                audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
+                audio_config = texttospeech.types.AudioConfig(
+                    audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
 
-            response = client.synthesize_speech(synthesis_input, voice, audio_config)
+                response = client.synthesize_speech(synthesis_input, voice, audio_config)
 
-            with open(self.audio_path2, 'wb') as out:
-                out.write(response.audio_content)
+                with open(self.audio_path2, 'wb') as out:
+                    out.write(response.audio_content)
 
-        if settings.use_balcon:
-            command = "%s -t \"%s\" -n %s -w %s" % (settings.balcon_location,
-            self.text, settings.balcon_voice, "\"" + self.audio_path2 + "\"")
+            if settings.use_balcon:
+                command = "%s -t \"%s\" -n %s -w %s" % (settings.balcon_location,
+                self.text, settings.balcon_voice, "\"" + self.audio_path2 + "\"")
 
-            process = subprocess.call(command, shell=True)
+                process = subprocess.call(command, shell=True)
+        else:
+            amount_spaces = self.text.count(' ')
+            estimated_time = ((amount_spaces / settings.estWordPerMinute) * 60) * 1000
+            new_audio = AudioSegment.silent(duration=(estimated_time))
+            new_audio.export(self.audio_path2, format='wav')
 
 
 

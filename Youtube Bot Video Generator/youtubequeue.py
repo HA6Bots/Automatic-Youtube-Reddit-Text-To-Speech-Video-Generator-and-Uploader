@@ -123,34 +123,39 @@ def tickThread():
                 else:
                     print("Out of Quote Response... waiting till %s" % waitTill)
 
-            if waitTill is None:
-                amount_to_upload = canUpload()
+            if settings.exportOffline:
+                waitTill = None
 
-                if type(amount_to_upload) is int:
-                    scripts_available_to_upload = [script for i, script in enumerate(videoscript.videoscripts) if
-                                                   script.isRendered]
-                    print("Allowed to upload %s videos" % amount_to_upload)
-                    if amount_to_upload > len(scripts_available_to_upload):
-                        amount_to_upload = len(scripts_available_to_upload)
-                        print("Only %s scripts available to upload" % amount_to_upload)
-                    print("Uploading %s video scripts... %s ready to upload (total %s)" % (
-                    amount_to_upload, amount_to_upload, len(videoscript.videoscripts)))
-                    for i in range(0, amount_to_upload, 1):
-                        upload = scripts_available_to_upload[i].uploadVideo()
-                        try:
-                            if upload is False:
-                                now = datetime.datetime.now()
-                                if now.hour > settings.youtube_api_quota_reset_hour:
-                                    waitTill = now.replace(hour=settings.youtube_api_quota_reset_hour, minute=0, second=0) + timedelta(days=1)
-                                else:
-                                    waitTill = now.replace(hour=settings.youtube_api_quota_reset_hour, minute=0, second=0)
-                        except Exception as e:
-                            print(e)
-                            pass
+
+            if not settings.exportOffline:
+                if waitTill is None:
+                    amount_to_upload = canUpload()
+
+                    if type(amount_to_upload) is int:
+                        scripts_available_to_upload = [script for i, script in enumerate(videoscript.videoscripts) if
+                                                       script.isRendered]
+                        print("Allowed to upload %s videos" % amount_to_upload)
+                        if amount_to_upload > len(scripts_available_to_upload):
+                            amount_to_upload = len(scripts_available_to_upload)
+                            print("Only %s scripts available to upload" % amount_to_upload)
+                        print("Uploading %s video scripts... %s ready to upload (total %s)" % (
+                        amount_to_upload, amount_to_upload, len(videoscript.videoscripts)))
+                        for i in range(0, amount_to_upload, 1):
+                            upload = scripts_available_to_upload[i].uploadVideo()
+                            try:
+                                if upload is False:
+                                    now = datetime.datetime.now()
+                                    if now.hour > settings.youtube_api_quota_reset_hour:
+                                        waitTill = now.replace(hour=settings.youtube_api_quota_reset_hour, minute=0, second=0) + timedelta(days=1)
+                                    else:
+                                        waitTill = now.replace(hour=settings.youtube_api_quota_reset_hour, minute=0, second=0)
+                            except Exception as e:
+                                print(e)
+                                pass
 
                 generatorclient.last_upload_times = None
-            elif type(amount_to_upload) is bool:
-                print("Can't get last update times")
+            # elif type(amount_to_upload) is bool:
+            #     print("Can't get last update times")
             else:
                 print("Estimated out of quotes waiting till %s" % waitTill)
         else:
@@ -172,6 +177,9 @@ def initQueue():
     if not os.path.exists(settings.finishedvideosdirectory):
         os.mkdir(settings.finishedvideosdirectory)
 
+    if not os.path.exists(f"{settings.currentPath}/TempVids"):
+        os.mkdir(f"{settings.currentPath}/TempVids")
+
     loadVideoScripts()
     generatorclient.connectToServer()
     sleep(2)
@@ -190,24 +198,25 @@ if __name__ == "__main__":
     else:
         print("Video Generator launching in export offline mode")
 
-    if settings.use_balcon and settings.use_google_tts:
-        print("You have selected to use both google tts and balcon tts! Please only select one in the config file!")
-        begin = False
-
-    if not settings.use_balcon and not settings.use_google_tts:
-        print("You have not selected any tts options in the config file!"
-              " Please set either google tts or balcon tts to true! Not both!")
-        begin = False
-
-    if settings.use_balcon:
-        command = "%s -t \"%s\" -n %s" % (settings.balcon_location,
-                                                "Balcon Voice Success", settings.balcon_voice)
-
-        process = subprocess.call(command, shell=True)
-        if process != 0:
-            print("Balcon not found. This will work when the following command works in your commandline: %s" % ("%s -t \"%s\" -n %s" % (settings.balcon_location,
-                                                "Balcon Voice Test", settings.balcon_voice)))
+    if not settings.noSpeech:
+        if settings.use_balcon and settings.use_google_tts:
+            print("You have selected to use both google tts and balcon tts! Please only select one in the config file!")
             begin = False
+
+        if not settings.use_balcon and not settings.use_google_tts:
+            print("You have not selected any tts options in the config file!"
+                  " Please set either google tts or balcon tts to true! Not both!")
+            begin = False
+
+        if settings.use_balcon:
+            command = "%s -t \"%s\" -n %s" % (settings.balcon_location,
+                                                    "Balcon Voice Success", settings.balcon_voice)
+
+            process = subprocess.call(command, shell=True)
+            if process != 0:
+                print("Balcon not found. This will work when the following command works in your commandline: %s" % ("%s -t \"%s\" -n %s" % (settings.balcon_location,
+                                                    "Balcon Voice Test", settings.balcon_voice)))
+                begin = False
 
     if begin:
         initQueue()
