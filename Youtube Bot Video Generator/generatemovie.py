@@ -40,8 +40,6 @@ class Movie():
 
                     script.append([author, text])
 
-        print(script)
-
         clips = self.videoformat.renderClips(self.content, self.title)
         self.videoformat.createMovie(clips, self)
         self.background_music_name = self.videoformat.music
