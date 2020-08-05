@@ -4,6 +4,7 @@ import soundfile as sf
 import pickle
 from pydub import AudioSegment
 from pymediainfo import MediaInfo
+from time import sleep
 from copy import deepcopy
 import gc
 
@@ -23,6 +24,24 @@ class Movie():
         self.transitions = []
 
     def renderVideo(self):
+
+        script = [[self.title[0], self.title[1]]]
+
+        new_content = []
+        new_content.append([self.title[0], self.title[1]])
+        for con in self.content:
+            new_content.append(con)
+
+        for i, subcontent in enumerate(new_content):
+            if type(subcontent) is tuple:
+                for comment in subcontent:
+                    author = comment.author
+                    text = comment.text
+
+                    script.append([author, text])
+
+        print(script)
+
         clips = self.videoformat.renderClips(self.content, self.title)
         self.videoformat.createMovie(clips, self)
         self.background_music_name = self.videoformat.music
@@ -81,7 +100,18 @@ class Movie():
             os.makedirs(folder_location)
         print("Writing video to location %s" % folder_location)
         main_vid_with_audio.write_videofile("%s/%s.mp4" % (folder_location, "vid%s" % self.scriptno), threads=4,
-                                            fps=settings.movieFPS, temp_audiofile=settings.currentPath + "\\temp.mp3")
+                                            fps=settings.movieFPS, temp_audiofile="%s/%s.mp3" % (folder_location, "audio%s" % self.scriptno), remove_temp=False)
+
+        sleep(5)
+        #os.system(f"ffmpeg -y -i \"{'%s/%s.mp4' % (folder_location, 'vid%s' % self.scriptno)}\" -i \"{'%s/%s.mp3' % (folder_location, 'audio%s' % self.scriptno)}\" -c:v copy -c:a aac \"{'%s/%s.mp4' % (folder_location, 'vidfixedaudio%s' % self.scriptno)}\"")
+
+        f= open(f"{folder_location}/script.txt","w+")
+        f.write(script[0][1] + "\n" + script[0][1] + "\n\n")
+
+        for i in range(1, len(script), 1):
+            f.write(script[i][0] + "\n" + script[i][1] + "\n\n")
+        f.close()
+
         return folder_location
 
 
