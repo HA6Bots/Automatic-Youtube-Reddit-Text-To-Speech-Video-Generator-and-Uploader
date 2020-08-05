@@ -16,6 +16,11 @@ class VideoFormat(ABC):
 
     def selectMusic(self, musictype):
         self.music = "%s/Music/%s/%s" % (settings.assetPath, musictype, random.choice(os.listdir("%s/Music/%s/" % (settings.assetPath, musictype))))
+
+        while "DS_Store" in self.music:
+            self.music = "%s/Music/%s/%s" % (settings.assetPath, musictype, random.choice(os.listdir("%s/Music/%s/" % (settings.assetPath, musictype))))
+
+
         print(self.music)
 
     @abstractmethod
