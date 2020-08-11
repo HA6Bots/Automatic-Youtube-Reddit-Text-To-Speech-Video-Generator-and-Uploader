@@ -103,12 +103,18 @@ class Movie():
         sleep(5)
         #os.system(f"ffmpeg -y -i \"{'%s/%s.mp4' % (folder_location, 'vid%s' % self.scriptno)}\" -i \"{'%s/%s.mp3' % (folder_location, 'audio%s' % self.scriptno)}\" -c:v copy -c:a aac \"{'%s/%s.mp4' % (folder_location, 'vidfixedaudio%s' % self.scriptno)}\"")
 
-        f= open(f"{folder_location}/script.txt","w+")
-        f.write(script[0][1] + "\n" + script[0][1] + "\n\n")
+        try:
+            f= open(f"{folder_location}/script.txt","w+")
+            f.write(script[0][1] + "\n" + script[0][1] + "\n\n")
 
-        for i in range(1, len(script), 1):
-            f.write(script[i][0] + "\n" + script[i][1] + "\n\n")
-        f.close()
+            for i in range(1, len(script), 1):
+                try:
+                    f.write(script[i][0] + "\n" + script[i][1] + "\n\n")
+                except Exception as e:
+                    pass
+            f.close()
+        except Exception as e:
+            pass
 
         return folder_location
 
