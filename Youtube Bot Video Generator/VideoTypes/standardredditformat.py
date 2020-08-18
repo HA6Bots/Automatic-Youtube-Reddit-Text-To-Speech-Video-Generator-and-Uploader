@@ -243,8 +243,15 @@ class StandardReddit(videoformat.VideoFormat):
             fontpath = ("%s/Verdana.ttf" % (settings.assetPath))
             font = ImageFont.truetype(fontpath, fontSize)
             font_header = ImageFont.truetype(fontpath, int(fontSize * self.settings.comment_author_factor))
+
             my_img = np.zeros((self.settings.imageSize[1], self.settings.imageSize[0], 3), dtype="uint8")
-            my_img[:, :, :] = self.settings.background_color
+
+            if settings.use_overlay:
+                im_frame = Image.open(f"{settings.overlayPath}/{settings.overlay_image}")
+                my_img = np.asarray(im_frame)
+            else:
+                my_img[:, :, :] = self.settings.background_color
+
             img_pil = Image.fromarray(my_img)
             draw = ImageDraw.Draw(img_pil)
 
@@ -253,6 +260,11 @@ class StandardReddit(videoformat.VideoFormat):
 
 
             if type(subcontent) is tuple:
+                if self.settings.hasBoundingBox:
+                    draw.rectangle([(offsetX, offsetY),
+                                    (self.settings.imageSize[0] - offsetX, self.settings.imageSize[1] - offsetY)],
+                                   fill=tuple(self.settings.bounding_box_colour))
+
                 for comment in subcontent:
                     author = comment.author
                     text = comment.text
@@ -267,6 +279,7 @@ class StandardReddit(videoformat.VideoFormat):
 
                     lastText = ""
                     currentline = ""
+
 
                     draw.text((offsetX + lineWidth, offsetY + lineHeight), author, font=font_header,
                               fill=tuple(self.settings.author_details_color))
@@ -303,8 +316,13 @@ class StandardReddit(videoformat.VideoFormat):
                             currentline += text
                             lineWidth = (font.getsize(currentline)[0])
 
+
                             my_img = deepcopy(np.array(img_pil))
                             frameNo += 1
+
+                            #cv2.imshow('image', my_img)
+                            #cv2.waitKey(0)
+
                             newFrame = imageframe.Frame(my_img, lastText, frameNo)
                             lastText = ""
                             frames.append(newFrame)
@@ -312,7 +330,6 @@ class StandardReddit(videoformat.VideoFormat):
                     tempHeight = font.getsize("random")[1]
                     offsetY += (tempHeight * self.settings.reply_fontsize_factorY)
                     offsetX += (tempWidth * self.settings.reply_fontsize_factorX)
-
                 commentThread = imageframe.CommentThread(frames)
                 clips.append(commentThread)
         return clips
