@@ -11,6 +11,7 @@ from threading import Thread
 import pickle
 import datetime
 from datetime import timedelta
+from PIL import Image
 import subprocess
 import videoscript
 import random
@@ -177,8 +178,13 @@ def initQueue():
     if not os.path.exists(settings.finishedvideosdirectory):
         os.mkdir(settings.finishedvideosdirectory)
 
+    if not os.path.exists(settings.overlayPath):
+        os.mkdir(settings.overlayPath)
+
     if not os.path.exists(f"{settings.currentPath}/TempVids"):
         os.mkdir(f"{settings.currentPath}/TempVids")
+
+
 
     loadVideoScripts()
     generatorclient.connectToServer()
@@ -216,6 +222,18 @@ if __name__ == "__main__":
             if process != 0:
                 print("Balcon not found. This will work when the following command works in your commandline: %s" % ("%s -t \"%s\" -n %s" % (settings.balcon_location,
                                                     "Balcon Voice Test", settings.balcon_voice)))
+                begin = False
+
+    if settings.use_overlay:
+        if not os.path.exists(f"{settings.overlayPath}/{settings.overlay_image}"):
+            print(f"Overlay image {settings.overlayPath}/{settings.overlay_image} does not exist! Fix the file name in config.ini or set use_overlay=False")
+
+            begin = False
+        else:
+            im = Image.open(f"{settings.overlayPath}/{settings.overlay_image}")
+            width, height = im.size
+            if width != 1920 or height != 1080:
+                print(f"Overlay image {settings.overlayPath}/{settings.overlay_image} not of correct dimensions ({width},{height})! Needs to be 1920x1080")
                 begin = False
 
     if begin:

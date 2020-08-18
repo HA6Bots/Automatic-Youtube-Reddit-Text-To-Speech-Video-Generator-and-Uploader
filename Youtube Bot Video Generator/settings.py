@@ -7,6 +7,7 @@ if platform == "win32":
     tempPath = (r"%s\\Temp" % currentPath)
     assetPath = (r"%s\\Assets" % currentPath)
     exportPath = (r"%s\\Export" % currentPath)
+    overlayPath = (r"%s\\Overlay" % currentPath)
     videoqueue_directory = r"%s\\VIDEOQUEUE\\" % currentPath
     rawvideosaves = r"%s\\VIDEOQUEUE\\RAWSAVES" % currentPath
     finishedvideosdirectory = r"%s\\VIDEOQUEUE\\RENDEREDVIDS" % currentPath
@@ -19,6 +20,8 @@ if platform == "win32":
 else:
     tempPath = ("%s/Temp" % currentPath)
     assetPath = ("%s/Assets" % currentPath)
+    overlayPath = ("%s/Overlay" % currentPath)
+
     exportPath = ("%s/Export" % currentPath)
     videoqueue_directory = "%s/VIDEOQUEUE/" % currentPath
     rawvideosaves = "%s/VIDEOQUEUE/RAWSAVES" % currentPath
@@ -77,6 +80,8 @@ youtube_api_quota_reset_hour = 8
 balcon_location = "wine /home/royalreddit/Desktop/balcon/balcon.exe"
 youtube_upload_location = ""
 python27_location = ""
+use_overlay = False
+overlay_image = None
 
 estWordPerMinute = 175
 
@@ -116,6 +121,11 @@ def generateConfigFile():
         config.set("other", 'disable_speech', 'False')
         config.set("other", 'est_word_per_minute', '175')
 
+        config.add_section("overlay")
+        config.set("other", 'use_overlay', 'False')
+        config.set("other", 'overlay_image', '')
+
+
 
 
         with open("config.ini", 'w') as configfile:
@@ -127,7 +137,8 @@ def generateConfigFile():
 def loadValues():
     global server_address, server_port, uploads_a_day, random_upload_hour_boundary1,\
         random_upload_hour_boundary2, youtube_api_quota_reset_hour, balcon_location, youtube_upload_location,\
-        python27_location, movieFPS, exportOffline, use_google_tts, balcon_voice, use_balcon, google_tts_language_code, google_tts_voice, background_music_volume, voice_volume, noSpeech, estWordPerMinute
+        python27_location, movieFPS, exportOffline, use_google_tts, balcon_voice, use_balcon, google_tts_language_code,\
+        google_tts_voice, background_music_volume, voice_volume, noSpeech, estWordPerMinute, use_overlay, overlay_image
     config = configparser.RawConfigParser()
 
     config.read("config.ini")
@@ -156,6 +167,9 @@ def loadValues():
     voice_volume = config.getfloat('other', 'voice_volume')
     noSpeech = config.getboolean('other', 'disable_speech')
     estWordPerMinute = config.getint('other', 'est_word_per_minute')
+
+    use_overlay = config.getboolean('overlay', 'use_overlay')
+    overlay_image = config.get('overlay', 'overlay_image')
 
 
 
