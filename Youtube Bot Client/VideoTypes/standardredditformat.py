@@ -4,6 +4,7 @@ import videosettings
 from copy import deepcopy
 from VideoTypes import videoformat, imageframe
 import ast
+import matplotlib
 
 class StandardReddit(videoformat.VideoFormat):
 
@@ -35,6 +36,10 @@ class StandardReddit(videoformat.VideoFormat):
         # print(script.inputString)
 
         if type(commentThread) == tuple:
+            if self.settings.hasBoundingBox:
+                draw.rectangle([(poffsetX, poffsetY),
+                                (self.settings.imageSize[0] - poffsetX, self.settings.imageSize[1] - poffsetY)],
+                               fill=tuple(self.settings.bounding_box_colour))
             for comment in commentThread:
                 author = comment.author
                 upvotes = comment.upvotes
@@ -47,6 +52,9 @@ class StandardReddit(videoformat.VideoFormat):
 
                 lastText = ""
                 currentline = ""
+
+
+
                 draw.text((poffsetX + lineWidth, poffsetY + lineHeight), author, font=font_header,
                           fill=tuple(self.settings.author_details_color))
                 tempXoffset = font_header.getsize(author)[0]
@@ -143,6 +151,7 @@ class StandardReddit(videoformat.VideoFormat):
         lineHeights = [9999]
         timesLooped = 0
         endLoop = False
+
         while True:
             if endLoop:
                 break
@@ -204,7 +213,9 @@ class StandardReddit(videoformat.VideoFormat):
             timesLooped += 1
 
             if max(lineHeights) < self.settings.imageSize[1] and max(lineWidths) < self.settings.imageSize[0]:
+
                 endLoop = True
+
 
         fontSizeReturn = fontSize - timesLooped
         marginOffsetX = (self.settings.imageSize[0] - max(lineWidths)) / 2
