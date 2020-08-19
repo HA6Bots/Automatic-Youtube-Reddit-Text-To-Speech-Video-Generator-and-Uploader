@@ -59,7 +59,7 @@ def loadDefaultVideoSettings(videoformattype):
     if videoformattype == "standardredditformat":
         return    {"imageSize": [1920, 1080],
                   "hasBoundingBox" : True,
-                  "bounding_box_colour" : [0, 0, 0],
+                  "bounding_box_colour" : [0, 0, 0, 255],
                   "background_color": [25, 25, 25],
                   "comment_text_color": [215, 218, 220],
                   "author_text_color": [89, 89, 89],
