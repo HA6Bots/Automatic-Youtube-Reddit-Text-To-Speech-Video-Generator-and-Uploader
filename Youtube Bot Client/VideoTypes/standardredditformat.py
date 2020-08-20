@@ -18,6 +18,10 @@ class StandardReddit(videoformat.VideoFormat):
         fontSizeD = fontSizeInfo[0]
         marginOffsetX = fontSizeInfo[1]
         marginOffsetY = fontSizeInfo[2]
+        upvoteMarginX = fontSizeInfo[3]
+        upvoteGapX = fontSizeInfo[4]
+        upvoteGapY = fontSizeInfo[5]
+
         fontpath = ("%s/Verdana.ttf" % (videosettings.assetPath))
         font = ImageFont.truetype(fontpath, fontSizeD)
 
@@ -40,6 +44,9 @@ class StandardReddit(videoformat.VideoFormat):
                 draw.rectangle([(poffsetX, poffsetY),
                                 (self.settings.imageSize[0] - poffsetX, self.settings.imageSize[1] - poffsetY)],
                                fill=tuple(self.settings.bounding_box_colour))
+            poffsetX += upvoteMarginX
+            poffsetY += upvoteGapY
+
             for comment in commentThread:
                 author = comment.author
                 upvotes = comment.upvotes
@@ -58,6 +65,18 @@ class StandardReddit(videoformat.VideoFormat):
                 draw.text((poffsetX + lineWidth, poffsetY + lineHeight), author, font=font_header,
                           fill=tuple(self.settings.author_details_color))
                 tempXoffset = font_header.getsize(author)[0]
+
+
+                if self.settings.hasUpvoteButton:
+                    icon_upvotes = Image.open(videosettings.assetPath + "/upvoteorange.png").resize((int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
+                    img_pil.paste(icon_upvotes, (int(poffsetX) - int(upvoteMarginX), int(poffsetY)), icon_upvotes)
+
+                    icon_upvotes_flipped = Image.open(videosettings.assetPath + "/upvotewhiteflipped.png").resize(
+                        (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
+                    img_pil.paste(icon_upvotes_flipped, (int(poffsetX) - int(upvoteMarginX), int(poffsetY) + int(upvoteMarginX) + int(upvoteGapY)), icon_upvotes_flipped)
+
+
+
                 draw.text((poffsetX + lineWidth + tempXoffset, poffsetY + lineHeight),
                           " %s" % imageframe.redditPointsFormat(upvotes, True), font=font_header,
                           fill=tuple(self.settings.author_text_color))
@@ -121,7 +140,7 @@ class StandardReddit(videoformat.VideoFormat):
         iconbannergap = 90
 
 
-        icon_upvotes = Image.open(videosettings.assetPath + "/upvotewhite.png").resize((upvoteiconwidth, upvoteiconheight), Image.NEAREST)
+        icon_upvotes = Image.open(videosettings.assetPath + "/upvotewhitethumbnail.png").resize((upvoteiconwidth, upvoteiconheight), Image.NEAREST)
         icon_comments = Image.open(videosettings.assetPath + "/chatwhite.png").resize((upvoteiconwidth, upvoteiconheight), Image.NEAREST)
         img_pil.paste(icon_upvotes, (xPosCommentIcon, yPosCommentIcon), icon_upvotes)
         img_pil.paste(icon_comments, (iconbannergap + xPosCommentIcon + upvoteiconwidth + font_below_icons.getsize(imageframe.redditPointsFormat(upvotes, False))[0] + iconbannerOffsetX * 2, yPosCommentIcon), icon_comments)
@@ -151,6 +170,9 @@ class StandardReddit(videoformat.VideoFormat):
         lineHeights = [9999]
         timesLooped = 0
         endLoop = False
+        upvoteMarginX = 0
+        upvoteGapX = 0
+        upvoteGapY = 0
 
         while True:
             if endLoop:
@@ -160,8 +182,15 @@ class StandardReddit(videoformat.VideoFormat):
 
             font_header = ImageFont.truetype(fontpath, int(fontSize - timesLooped * self.settings.comment_author_factor))
 
-            poffsetX = 0
-            poffsetY = 0
+
+            upvoteGapX = font.getsize("1" * self.settings.upvote_gap_scale_x)[0]
+            upvoteGapY = font.getsize("1")[1] * self.settings.upvote_gap_scale_y
+
+            upvoteMarginX = font.getsize("1" * self.settings.upvote_fontsize_scale)[0] + upvoteGapX
+
+
+            poffsetX = upvoteMarginX
+            poffsetY = upvoteGapY
             lineWidths.clear()
             lineHeights.clear()
 
@@ -221,5 +250,5 @@ class StandardReddit(videoformat.VideoFormat):
         marginOffsetX = (self.settings.imageSize[0] - max(lineWidths)) / 2
         marginOffsetY = (self.settings.imageSize[1] - max(lineHeights)) / 2
 
-        return (fontSizeReturn, marginOffsetX, marginOffsetY)
+        return (fontSizeReturn, marginOffsetX, marginOffsetY, upvoteMarginX, upvoteGapX, upvoteGapY)
 
