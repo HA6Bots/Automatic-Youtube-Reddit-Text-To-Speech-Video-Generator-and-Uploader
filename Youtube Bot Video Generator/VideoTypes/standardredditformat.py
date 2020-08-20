@@ -146,22 +146,32 @@ class StandardReddit(videoformat.VideoFormat):
     def calculateFontSize(self, commentThread, fontSize=settings.preferred_font_size, thumbnail = False):
         fontSize = fontSize
         fontpath = ("%s/Verdana.ttf" % (settings.assetPath))
-        #fontpathbold = ("%s/verdanab.ttf" % (settings.assetPath))
+        # fontpathbold = ("%s/verdanab.ttf" % (settings.assetPath))
 
         lineWidths = [9999]
         lineHeights = [9999]
         timesLooped = 0
         endLoop = False
+        upvoteMarginX = 0
+        upvoteGapX = 0
+        upvoteGapY = 0
+
         while True:
             if endLoop:
                 break
 
             font = ImageFont.truetype(fontpath, fontSize - timesLooped)
 
-            font_header = ImageFont.truetype(fontpath, int(fontSize - timesLooped * self.settings.comment_author_factor))
+            font_header = ImageFont.truetype(fontpath,
+                                             int(fontSize - timesLooped * self.settings.comment_author_factor))
 
-            poffsetX = 0
-            poffsetY = 0
+            upvoteGapX = font.getsize("1" * self.settings.upvote_gap_scale_x)[0]
+            upvoteGapY = font.getsize("1")[1] * self.settings.upvote_gap_scale_y
+
+            upvoteMarginX = font.getsize("1" * self.settings.upvote_fontsize_scale)[0] + upvoteGapX
+
+            poffsetX = upvoteMarginX
+            poffsetY = upvoteGapY
             lineWidths.clear()
             lineHeights.clear()
 
@@ -184,7 +194,7 @@ class StandardReddit(videoformat.VideoFormat):
                     poffsetY += font_header.getsize(author)[1]
 
                     for instr in instructions:
-                        text = instr[0]
+                        text = ast.literal_eval(repr(instr[0]))
                         tag = instr[1]
 
                         if tag == "<LW>" or tag == "":
@@ -219,7 +229,7 @@ class StandardReddit(videoformat.VideoFormat):
         marginOffsetX = (self.settings.imageSize[0] - max(lineWidths)) / 2
         marginOffsetY = (self.settings.imageSize[1] - max(lineHeights)) / 2
 
-        return (fontSizeReturn, marginOffsetX, marginOffsetY)
+        return (fontSizeReturn, marginOffsetX, marginOffsetY, upvoteMarginX, upvoteGapX, upvoteGapY)
 
     def renderClips(self, content, title):
         clips = [] #commentThreads
@@ -240,6 +250,11 @@ class StandardReddit(videoformat.VideoFormat):
             fontSize = fontSizeInfo[0]
             marginOffsetX = fontSizeInfo[1]
             marginOffsetY = fontSizeInfo[2]
+            upvoteMarginX = fontSizeInfo[3]
+            upvoteGapX = fontSizeInfo[4]
+            upvoteGapY = fontSizeInfo[5]
+
+
             fontpath = ("%s/Verdana.ttf" % (settings.assetPath))
             font = ImageFont.truetype(fontpath, fontSize)
             font_header = ImageFont.truetype(fontpath, int(fontSize * self.settings.comment_author_factor))
@@ -264,6 +279,8 @@ class StandardReddit(videoformat.VideoFormat):
                     draw.rectangle([(offsetX, offsetY),
                                     (self.settings.imageSize[0] - offsetX, self.settings.imageSize[1] - offsetY)],
                                    fill=tuple(self.settings.bounding_box_colour))
+                offsetX += upvoteMarginX
+                offsetY += upvoteGapY
 
                 for comment in subcontent:
                     author = comment.author
@@ -284,6 +301,18 @@ class StandardReddit(videoformat.VideoFormat):
                     draw.text((offsetX + lineWidth, offsetY + lineHeight), author, font=font_header,
                               fill=tuple(self.settings.author_details_color))
                     tempXoffset = font_header.getsize(author)[0]
+
+                    if self.settings.hasUpvoteButton:
+                        icon_upvotes = Image.open(settings.assetPath + "/upvoteorange.png").resize(
+                            (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
+                        img_pil.paste(icon_upvotes, (int(offsetX) - int(upvoteMarginX), int(offsetY)), icon_upvotes)
+
+                        icon_upvotes_flipped = Image.open(settings.assetPath + "/upvotewhiteflipped.png").resize(
+                            (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
+                        img_pil.paste(icon_upvotes_flipped, (
+                        int(offsetX) - int(upvoteMarginX), int(offsetY) + int(upvoteMarginX) + int(upvoteGapY)),
+                                      icon_upvotes_flipped)
+
                     draw.text((offsetX + lineWidth + tempXoffset, offsetY + lineHeight),
                               " %s" % imageframe.redditPointsFormat(upvotes, True), font=font_header,
                               fill=tuple(self.settings.author_text_color))
