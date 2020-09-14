@@ -122,8 +122,8 @@ def generateConfigFile():
         config.set("other", 'est_word_per_minute', '175')
 
         config.add_section("overlay")
-        config.set("other", 'use_overlay', 'False')
-        config.set("other", 'overlay_image', '')
+        config.set("overlay", 'use_overlay', 'False')
+        config.set("overlay", 'overlay_image', '')
 
 
 
