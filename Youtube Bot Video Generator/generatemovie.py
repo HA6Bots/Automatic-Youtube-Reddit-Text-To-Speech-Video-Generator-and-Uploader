@@ -91,10 +91,8 @@ class Movie():
         # here we are combining the first clip with the last
         print("Combining all Video Clips %s" % (pause_time / 1000))
         main_vid_combined = concatenate_videoclips(clips)
-        if not settings.noSpeech:
-            main_vid_with_audio = main_vid_combined.set_audio(CompositeAudioClip([main_vid_combined.audio, AudioFileClip("%s/music-loop2.wav" % settings.tempPath)]))
-        else:
-            main_vid_with_audio = main_vid_combined.set_audio(AudioFileClip("%s/music-loop2.wav" % settings.tempPath))
+        main_vid_with_audio.write_videofile("%s/%s.mp4" % (folder_location, "vid%s" % self.scriptno), threads=4,
+                                                fps=settings.movieFPS, temp_audiofile="%s/%s.mp3" % (folder_location, "audio%s" % self.scriptno), remove_temp=False)
 
         folder_location = settings.finishedvideosdirectory + "/vid%s" % self.scriptno
         if not os.path.exists(folder_location):
