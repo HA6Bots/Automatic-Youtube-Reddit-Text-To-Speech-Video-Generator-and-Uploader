@@ -27,6 +27,8 @@ def loadVideoScripts():
     vidsaves = os.listdir(settings.rawvideosaves)
     print(vidsaves)
     for vid in vidsaves:
+        if "DS_Store" in vid:
+            continue
         path = settings.rawvideosaves + "/" + vid
         with open(path, 'rb') as pickle_file:
             script = pickle.load(pickle_file)
