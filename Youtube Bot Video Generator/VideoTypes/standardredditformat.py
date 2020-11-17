@@ -275,10 +275,23 @@ class StandardReddit(videoformat.VideoFormat):
 
 
             if type(subcontent) is tuple:
+
                 if self.settings.hasBoundingBox:
+
+                    authorSize = font_header.getsize(subcontent[0].author)[0]
+                    upvoteSize = font_header.getsize(" %s" % imageframe.redditPointsFormat(subcontent[0].upvotes, True))[0]
+
+                    boundingBoxWidth = self.settings.imageSize[0] - offsetX
+                    boundingBoxHeight = self.settings.imageSize[1] - offsetY
+
+                    if boundingBoxWidth < offsetX + authorSize + upvoteSize:
+                        boundingBoxWidth = offsetX + authorSize + upvoteSize + upvoteMarginX
+
                     draw.rectangle([(offsetX, offsetY),
-                                    (self.settings.imageSize[0] - offsetX, self.settings.imageSize[1] - offsetY)],
+                                    (boundingBoxWidth, boundingBoxHeight)],
                                    fill=tuple(self.settings.bounding_box_colour))
+
+
                 offsetX += upvoteMarginX
                 offsetY += upvoteGapY
 
