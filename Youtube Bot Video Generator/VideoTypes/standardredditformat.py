@@ -241,139 +241,142 @@ class StandardReddit(videoformat.VideoFormat):
             new_content.append(con)
         for i, subcontent in enumerate(new_content):
             print("Rendering clip (%s/%s)" % (i + 1, len(new_content)))
-            frames = []
-            if not i == 0:
-                fontSizeInfo = self.calculateFontSize(subcontent, self.settings.preferred_font_size)
-            else:
-                # if it is the title max out font size
-                fontSizeInfo = self.calculateFontSize(subcontent, 100)
-            fontSize = fontSizeInfo[0]
-            marginOffsetX = fontSizeInfo[1]
-            marginOffsetY = fontSizeInfo[2]
-            upvoteMarginX = fontSizeInfo[3]
-            upvoteGapX = fontSizeInfo[4]
-            upvoteGapY = fontSizeInfo[5]
+            try:
+                frames = []
+                if not i == 0:
+                    fontSizeInfo = self.calculateFontSize(subcontent, self.settings.preferred_font_size)
+                else:
+                    # if it is the title max out font size
+                    fontSizeInfo = self.calculateFontSize(subcontent, 100)
+                fontSize = fontSizeInfo[0]
+                marginOffsetX = fontSizeInfo[1]
+                marginOffsetY = fontSizeInfo[2]
+                upvoteMarginX = fontSizeInfo[3]
+                upvoteGapX = fontSizeInfo[4]
+                upvoteGapY = fontSizeInfo[5]
 
 
-            fontpath = ("%s/Verdana.ttf" % (settings.assetPath))
-            font = ImageFont.truetype(fontpath, fontSize)
-            font_header = ImageFont.truetype(fontpath, int(fontSize * self.settings.comment_author_factor))
+                fontpath = ("%s/Verdana.ttf" % (settings.assetPath))
+                font = ImageFont.truetype(fontpath, fontSize)
+                font_header = ImageFont.truetype(fontpath, int(fontSize * self.settings.comment_author_factor))
 
-            my_img = np.zeros((self.settings.imageSize[1], self.settings.imageSize[0], 3), dtype="uint8")
+                my_img = np.zeros((self.settings.imageSize[1], self.settings.imageSize[0], 3), dtype="uint8")
 
-            if settings.use_overlay:
-                im_frame = Image.open(f"{settings.overlayPath}/{settings.overlay_image}")
-                my_img = np.asarray(im_frame)
-            else:
-                my_img[:, :, :] = self.settings.background_color
+                if settings.use_overlay:
+                    im_frame = Image.open(f"{settings.overlayPath}/{settings.overlay_image}")
+                    my_img = np.asarray(im_frame)
+                else:
+                    my_img[:, :, :] = self.settings.background_color
 
-            img_pil = Image.fromarray(my_img)
-            draw = ImageDraw.Draw(img_pil)
+                img_pil = Image.fromarray(my_img)
+                draw = ImageDraw.Draw(img_pil)
 
-            offsetX = marginOffsetX
-            offsetY = marginOffsetY
-
-
-            if type(subcontent) is tuple:
-
-                if self.settings.hasBoundingBox:
-
-                    authorSize = font_header.getsize(subcontent[0].author)[0]
-                    upvoteSize = font_header.getsize(" %s" % imageframe.redditPointsFormat(subcontent[0].upvotes, True))[0]
-
-                    boundingBoxWidth = self.settings.imageSize[0] - offsetX
-                    boundingBoxHeight = self.settings.imageSize[1] - offsetY
-
-                    if boundingBoxWidth < offsetX + authorSize + upvoteSize:
-                        boundingBoxWidth = offsetX + authorSize + upvoteSize + upvoteMarginX
-
-                    draw.rectangle([(offsetX, offsetY),
-                                    (boundingBoxWidth, boundingBoxHeight)],
-                                   fill=tuple(self.settings.bounding_box_colour))
+                offsetX = marginOffsetX
+                offsetY = marginOffsetY
 
 
-                offsetX += upvoteMarginX
-                offsetY += upvoteGapY
+                if type(subcontent) is tuple:
 
-                for comment in subcontent:
-                    author = comment.author
-                    text = comment.text
-                    upvotes = comment.upvotes
-                    script = imageframe.VideoScript(text)
-                    script.insertLineWrappingTags()
-                    script.insertNewLineTags()
-                    script.insertAudioBreakTags()
-                    instructions = script.getTags()
-                    lineWidth = 0
-                    lineHeight = 0
+                    if self.settings.hasBoundingBox:
 
-                    lastText = ""
-                    currentline = ""
+                        authorSize = font_header.getsize(subcontent[0].author)[0]
+                        upvoteSize = font_header.getsize(" %s" % imageframe.redditPointsFormat(subcontent[0].upvotes, True))[0]
+
+                        boundingBoxWidth = self.settings.imageSize[0] - offsetX
+                        boundingBoxHeight = self.settings.imageSize[1] - offsetY
+
+                        if boundingBoxWidth < offsetX + authorSize + upvoteSize:
+                            boundingBoxWidth = offsetX + authorSize + upvoteSize + upvoteMarginX
+
+                        draw.rectangle([(offsetX, offsetY),
+                                        (boundingBoxWidth, boundingBoxHeight)],
+                                       fill=tuple(self.settings.bounding_box_colour))
 
 
-                    draw.text((offsetX + lineWidth, offsetY + lineHeight), author, font=font_header,
-                              fill=tuple(self.settings.author_details_color))
-                    tempXoffset = font_header.getsize(author)[0]
+                    offsetX += upvoteMarginX
+                    offsetY += upvoteGapY
 
-                    if self.settings.hasUpvoteButton:
-                        icon_upvotes = Image.open(settings.assetPath + "/upvoteorange.png").resize(
-                            (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
-                        img_pil.paste(icon_upvotes, (int(offsetX) - int(upvoteMarginX), int(offsetY)), icon_upvotes)
+                    for comment in subcontent:
+                        author = comment.author
+                        text = comment.text
+                        upvotes = comment.upvotes
+                        script = imageframe.VideoScript(text)
+                        script.insertLineWrappingTags()
+                        script.insertNewLineTags()
+                        script.insertAudioBreakTags()
+                        instructions = script.getTags()
+                        lineWidth = 0
+                        lineHeight = 0
 
-                        icon_upvotes_flipped = Image.open(settings.assetPath + "/upvotewhiteflipped.png").resize(
-                            (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
-                        img_pil.paste(icon_upvotes_flipped, (
-                        int(offsetX) - int(upvoteMarginX), int(offsetY) + int(upvoteMarginX) + int(upvoteGapY)),
-                                      icon_upvotes_flipped)
+                        lastText = ""
+                        currentline = ""
 
-                    draw.text((offsetX + lineWidth + tempXoffset, offsetY + lineHeight),
-                              " %s" % imageframe.redditPointsFormat(upvotes, True), font=font_header,
-                              fill=tuple(self.settings.author_text_color))
-                    offsetY += font_header.getsize(author)[1]
 
-                    for instr in instructions:
-                        text = ast.literal_eval(repr(instr[0]))
-                        text = text.replace("\\'", "'")
-                        tag = instr[1]
-                        draw.text((offsetX + lineWidth, offsetY + lineHeight), text, font=font,
-                                  fill=tuple(self.settings.comment_text_color))
-                        if tag == "<LW>":
-                            if not lastText == text:
-                                if not text.replace(" ", "") == "":
-                                    lastText += text
+                        draw.text((offsetX + lineWidth, offsetY + lineHeight), author, font=font_header,
+                                  fill=tuple(self.settings.author_details_color))
+                        tempXoffset = font_header.getsize(author)[0]
 
-                            currentline += text
-                            currentline = ""
-                            lineWidth = 0
-                            offsetY += (font.getsize("asd")[1])
-                        else:
-                            if tag == "":
+                        if self.settings.hasUpvoteButton:
+                            icon_upvotes = Image.open(settings.assetPath + "/upvoteorange.png").resize(
+                                (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
+                            img_pil.paste(icon_upvotes, (int(offsetX) - int(upvoteMarginX), int(offsetY)), icon_upvotes)
+
+                            icon_upvotes_flipped = Image.open(settings.assetPath + "/upvotewhiteflipped.png").resize(
+                                (int(upvoteMarginX) - int(upvoteGapX), int(upvoteMarginX) - int(upvoteGapX)), Image.NEAREST)
+                            img_pil.paste(icon_upvotes_flipped, (
+                            int(offsetX) - int(upvoteMarginX), int(offsetY) + int(upvoteMarginX) + int(upvoteGapY)),
+                                          icon_upvotes_flipped)
+
+                        draw.text((offsetX + lineWidth + tempXoffset, offsetY + lineHeight),
+                                  " %s" % imageframe.redditPointsFormat(upvotes, True), font=font_header,
+                                  fill=tuple(self.settings.author_text_color))
+                        offsetY += font_header.getsize(author)[1]
+
+                        for instr in instructions:
+                            text = ast.literal_eval(repr(instr[0]))
+                            text = text.replace("\\'", "'")
+                            tag = instr[1]
+                            draw.text((offsetX + lineWidth, offsetY + lineHeight), text, font=font,
+                                      fill=tuple(self.settings.comment_text_color))
+                            if tag == "<LW>":
+                                if not lastText == text:
+                                    if not text.replace(" ", "") == "":
+                                        lastText += text
+
+                                currentline += text
+                                currentline = ""
+                                lineWidth = 0
                                 offsetY += (font.getsize("asd")[1])
                             else:
-                                lineWidth = (font.getsize(text)[0])
+                                if tag == "":
+                                    offsetY += (font.getsize("asd")[1])
+                                else:
+                                    lineWidth = (font.getsize(text)[0])
 
-                        if tag == "<BRK>" or tag == "":
-                            if not lastText == text:
-                                lastText += text
-                            currentline += text
-                            lineWidth = (font.getsize(currentline)[0])
+                            if tag == "<BRK>" or tag == "":
+                                if not lastText == text:
+                                    lastText += text
+                                currentline += text
+                                lineWidth = (font.getsize(currentline)[0])
 
 
-                            my_img = deepcopy(np.array(img_pil))
-                            frameNo += 1
+                                my_img = deepcopy(np.array(img_pil))
+                                frameNo += 1
 
-                            #cv2.imshow('image', my_img)
-                            #cv2.waitKey(0)
+                                #cv2.imshow('image', my_img)
+                                #cv2.waitKey(0)
 
-                            newFrame = imageframe.Frame(my_img, lastText, frameNo)
-                            lastText = ""
-                            frames.append(newFrame)
-                    tempWidth = font.getsize("1" * self.settings.reply_characters_factorX)[0]
-                    tempHeight = font.getsize("random")[1]
-                    offsetY += (tempHeight * self.settings.reply_fontsize_factorY)
-                    offsetX += (tempWidth * self.settings.reply_fontsize_factorX)
-                commentThread = imageframe.CommentThread(frames)
-                clips.append(commentThread)
+                                newFrame = imageframe.Frame(my_img, lastText, frameNo)
+                                lastText = ""
+                                frames.append(newFrame)
+                        tempWidth = font.getsize("1" * self.settings.reply_characters_factorX)[0]
+                        tempHeight = font.getsize("random")[1]
+                        offsetY += (tempHeight * self.settings.reply_fontsize_factorY)
+                        offsetX += (tempWidth * self.settings.reply_fontsize_factorX)
+                    commentThread = imageframe.CommentThread(frames)
+                    clips.append(commentThread)
+            except IndexError:
+                print("index error, skipping clip.")
         return clips
 
 
