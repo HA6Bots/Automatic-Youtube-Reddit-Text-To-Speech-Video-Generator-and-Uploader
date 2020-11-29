@@ -49,7 +49,7 @@ class VideoScriptEngine():
             print("Started Rendering Script %s" % self.scriptno)
             imageframe.deleteAllFilesInPath(settings.tempPath)
             try:
-                video_format = standardredditformat.StandardReddit("shit", self.video_settings, self.music_type)
+                video_format = standardredditformat.StandardReddit("test", self.video_settings, self.music_type)
                 formatted_script = imageframe.parseScript(self.final_script)
                 newMovie = generatemovie.Movie(video_format, formatted_script,
                                                (self.author, self.scripttitle, self.ups), self.scriptno)
