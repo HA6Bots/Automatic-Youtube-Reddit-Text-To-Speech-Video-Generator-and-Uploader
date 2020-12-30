@@ -90,6 +90,9 @@ class Movie():
 
         # here we are combining the first clip with the last
         print("Combining all Video Clips %s" % (pause_time / 1000))
+        if os.path.exists("%s/Intervals/outro.mp4" % settings.assetPath):
+            clips.append(VideoFileClip("%s/Intervals/outro.mp4" % settings.assetPath))
+            print("Adding outro")
         main_vid_combined = concatenate_videoclips(clips)
         main_vid_with_audio = main_vid_combined.set_audio(CompositeAudioClip([main_vid_combined.audio, AudioFileClip("%s/music-loop2.wav" % settings.tempPath)]))
 
