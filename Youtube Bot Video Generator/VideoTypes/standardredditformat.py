@@ -400,7 +400,7 @@ class StandardReddit(videoformat.VideoFormat):
                     if not i == 0:
                         intervalFile = random.choice(os.listdir("%s/Intervals/" % settings.assetPath))
 
-                        while "DS_Store" in intervalFile:
+                        while "DS_Store" in intervalFile or "outro" in intervalFile:
                             intervalFile = random.choice(os.listdir("%s/Intervals/" % settings.assetPath))
 
                         movie.addFrameWithTransition(image_path, audio_path, "%s/Intervals/%s" % (settings.assetPath, intervalFile))
