@@ -14,6 +14,7 @@ import client
 import cv2
 import ast
 from VideoTypes import standardredditformat
+import traceback, sys
 
 scriptsMenu = None
 
@@ -71,7 +72,7 @@ class VideoEditor(QMainWindow):
         self.updateDisplay()
 
     def setConstants(self):
-        self.videoquestion.setText("Video Title: %s"%self.videoScript.title)
+        self.videoTitle.setText(self.videoScript.title)
         self.avgwordsmin.setText("Avg Words/Min: %s"%settings.wordsPerMinute)
         self.timebetweencommentthread.setText("Time Between Comment Thread: %s"%settings.timeBetweenCommentThread)
         self.subreddit.setText("r/%s"%self.videoScript.sub_reddit)
@@ -137,7 +138,8 @@ class VideoEditor(QMainWindow):
             bytesPerLine = 3 * width
             qImg = QImage(stillframe.data, width, height, bytesPerLine, QImage.Format_RGB888).scaled(self.imageArea.frameGeometry().width(), self.imageArea.frameGeometry().height(), QtCore.Qt.KeepAspectRatio)
             self.imageArea.setPixmap(QPixmap(qImg))
-        except Exception:
+        except Exception as e:
+            traceback.print_exc(file=sys.stdout)
             self.imageArea.setText("Rendering Error for Post, skipping")
             print("Need to log this comment")
             self.skipComment()
@@ -244,6 +246,7 @@ class VideoEditor(QMainWindow):
 
 
     def checkVideo(self):
+        self.scriptWrapper.title = self.videoTitle.toPlainText()
         if not self.scriptWrapper.isRecommendedLength():
             message = "Time: %s < %s" % (self.scriptWrapper.getEstimatedVideoTime(), settings.recommendedLength)
             self.createPopup("Warning", QMessageBox.Information, "Estimated Video Time Under 10 Minutes", message)
