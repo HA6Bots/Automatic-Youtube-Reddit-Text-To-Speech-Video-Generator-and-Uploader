@@ -267,7 +267,6 @@ class VideoEditor(QMainWindow):
 
 
     def checkVideo(self):
-        self.moveClipUp()
         self.scriptWrapper.title = self.videoTitle.toPlainText()
         if not self.scriptWrapper.isRecommendedLength():
             message = "Time: %s < %s" % (self.scriptWrapper.getEstimatedVideoTime(), settings.recommendedLength)
