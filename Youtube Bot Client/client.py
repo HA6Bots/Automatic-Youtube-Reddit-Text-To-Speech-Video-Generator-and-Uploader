@@ -11,6 +11,7 @@ import datetime
 import publishmenu
 import pandas as pd
 import settings
+settings.generateConfigFile()
 from PyQt5 import QtWidgets
 import configparser
 from PyQt5.QtCore import *
@@ -77,7 +78,8 @@ def formatVideoScript(script):
     youtube_title = script.youtube_title
     youtube_description = script.youtube_description
     youtube_tags = script.youtube_tags
-    payload = (access_key, "upload-video", script_no, (final_script, videotype, video_settings, music_type, thumbnail, characters_amount, youtube_title, youtube_description, youtube_tags))
+    title = script.scriptWrapper.title
+    payload = (access_key, "upload-video", script_no, (final_script, videotype, video_settings, music_type, thumbnail, characters_amount, youtube_title, youtube_description, youtube_tags, title))
     sendToServer(sock, payload)
 
 
