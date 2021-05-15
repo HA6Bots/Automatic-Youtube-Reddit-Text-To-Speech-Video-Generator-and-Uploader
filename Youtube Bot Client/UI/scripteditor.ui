@@ -283,22 +283,6 @@
      <string>Video Information</string>
     </property>
    </widget>
-   <widget class="QLabel" name="videoquestion">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>10</y>
-      <width>811</width>
-      <height>131</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Video Question</string>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="Line" name="line_3">
     <property name="geometry">
      <rect>
@@ -465,6 +449,16 @@
      </rect>
     </property>
    </widget>
+   <widget class="QTextEdit" name="videoTitle">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>10</y>
+      <width>481</width>
+      <height>131</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -472,7 +466,7 @@
      <x>0</x>
      <y>0</y>
      <width>1225</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuRender_Settings">
