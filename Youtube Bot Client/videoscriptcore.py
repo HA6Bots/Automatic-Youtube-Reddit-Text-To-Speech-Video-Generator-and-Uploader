@@ -124,6 +124,32 @@ class ScriptWrapper():
 
         self.scriptMap[mainCommentIndex] = newThread
 
+    def moveDown(self, i):
+        if i > 0:
+            copy1 = self.scriptMap[i-1]
+            copy2 = self.rawScript[i-1]
+
+            self.scriptMap[i-1] = self.scriptMap[i]
+            self.rawScript[i-1] = self.rawScript[i]
+
+            self.scriptMap[i] = copy1
+            self.rawScript[i] = copy2
+        else:
+            print("already at bottom!")
+
+    def moveUp(self, i):
+        if i < len(self.scriptMap) - 1:
+            copy1 = self.scriptMap[i+1]
+            copy2 = self.rawScript[i+1]
+
+            self.scriptMap[i+1] = self.scriptMap[i]
+            self.rawScript[i+1] = self.rawScript[i]
+
+            self.scriptMap[i] = copy1
+            self.rawScript[i] = copy2
+        else:
+            print("already at top!")
+
     def setCommentData(self, x, y, text):
         self.rawScript[x][y].text = text
 
