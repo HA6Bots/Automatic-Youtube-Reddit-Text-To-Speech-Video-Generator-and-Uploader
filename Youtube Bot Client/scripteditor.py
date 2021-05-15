@@ -45,6 +45,8 @@ class VideoEditor(QMainWindow):
         self.updateColors()
         self.treeWidget.currentItemChanged.connect(self.setSelection)
         self.treeWidget.clicked.connect(self.setSelection)
+        self.movedown.clicked.connect(self.moveCommentDown)
+        self.moveup.clicked.connect(self.moveCommentUp)
         self.publish.clicked.connect(self.publishVideo)
         self.editrendervalues.triggered.connect(self.openValueEditor)
         self.nightmode.triggered.connect(self.toggleNightMode)
@@ -71,6 +73,24 @@ class VideoEditor(QMainWindow):
         self.videoScript.videosettings = self.valueEditor.videoScript.videosettings
         self.updateDisplay()
 
+    def moveCommentDown(self):
+        self.scriptWrapper.moveUp(self.mainCommentIndex)
+        self.childCommentIndex = 0
+        self.addCommentInformation()
+        self.updateDisplay()
+        self.updateColors()
+        self.setSelection()
+
+
+    def moveCommentUp(self):
+        self.scriptWrapper.moveDown(self.mainCommentIndex)
+        self.childCommentIndex = 0
+        self.addCommentInformation()
+        self.updateDisplay()
+        self.updateColors()
+        self.setSelection()
+
+
     def setConstants(self):
         self.videoTitle.setText(self.videoScript.title)
         self.avgwordsmin.setText("Avg Words/Min: %s"%settings.wordsPerMinute)
@@ -95,15 +115,16 @@ class VideoEditor(QMainWindow):
 
     def setSelection(self):
         self.currentTreeWidget = self.treeWidget.currentItem()
-        if self.currentTreeWidget.parent() is None:
-            self.mainCommentIndex = int(str(self.currentTreeWidget.text(0)).split(" ")[2])
-            self.childCommentIndex = 0
-        else:
-            self.mainCommentIndex = int(str(self.currentTreeWidget.parent().text(0)).split(" ")[2])
-            self.childCommentIndex = int(str(self.currentTreeWidget.text(0)).split(" ")[2])
+        if self.currentTreeWidget is not None:
+            if self.currentTreeWidget.parent() is None:
+                self.mainCommentIndex = int(str(self.currentTreeWidget.text(0)).split(" ")[2])
+                self.childCommentIndex = 0
+            else:
+                self.mainCommentIndex = int(str(self.currentTreeWidget.parent().text(0)).split(" ")[2])
+                self.childCommentIndex = int(str(self.currentTreeWidget.text(0)).split(" ")[2])
 
-        self.updateColors()
-        self.updateDisplay()
+            self.updateColors()
+            self.updateDisplay()
 
     def updateDisplay(self, keep=None):
         self.scriptWrapper.saveScriptWrapper()
@@ -246,6 +267,7 @@ class VideoEditor(QMainWindow):
 
 
     def checkVideo(self):
+        self.moveClipUp()
         self.scriptWrapper.title = self.videoTitle.toPlainText()
         if not self.scriptWrapper.isRecommendedLength():
             message = "Time: %s < %s" % (self.scriptWrapper.getEstimatedVideoTime(), settings.recommendedLength)
