@@ -138,6 +138,24 @@ def updateScriptStatus(status, user, scriptid):
     cursor.close()
     connection_object.close()
 
+def updateScriptStatusById(status, user, scriptid):
+    global connection_pool
+    connection_object = connection_pool.get_connection()
+    cursor = connection_object.cursor()
+    if user is None:
+        user = "NULL"
+    else:
+        user = user
+    cursor.execute("USE youtubebot;")
+    query = "UPDATE scripts " \
+            "SET status = %s, editedby = %s WHERE submission_id = %s;"
+    args = (status, user, scriptid)
+
+    cursor.execute(query, args)
+    connection_object.commit()
+    cursor.close()
+    connection_object.close()
+
 def updateUserStatus(user, status):
     global connection_pool
     connection_object = connection_pool.get_connection()
@@ -201,7 +219,7 @@ def getCompletedScripts(back):
             author = res[2]
             ups = res[3]
             scriptpayload = pickle.loads(res[4])
-            load = (scriptno, scripttitle, author, ups, scriptpayload)
+            load = (scriptno, scriptpayload[9], author, ups, scriptpayload)
             results.append(load)
         cursor.close()
         connection_object.close()
@@ -310,9 +328,9 @@ def updateSubmission(submission):
     cursor.execute("USE youtubebot;")
     rawscript = pickle.dumps(submission.comments)
     query = "UPDATE scripts " \
-            "SET scripttitle = %s, rawscript = %s, ups = %s, downs = %s, num_comments = %s WHERE submission_id = %s"
+            "SET scripttitle = %s, rawscript = %s, ups = %s, downs = %s, num_comments = %s, timecreated = %s, timegathered = %s WHERE submission_id = %s"
     args = (submission.title, (rawscript), submission.upvotes, submission.downvotes, submission.amountcomments,
-            submission.submission_id)
+            submission.timecreated, submission.timegathered, submission.submission_id)
 
     cursor.execute(query, args)
     connection_object.commit()
