@@ -145,7 +145,7 @@ class VideoEditor(QMainWindow):
         self.totalwords.setText("Total Words: %s"%self.scriptWrapper.getEditedWordCount())
         self.estvidtime.setText("Estimated Video Time: %s"%self.scriptWrapper.getEstimatedVideoTime())
         self.totalcharacters.setText("Total Characters: %s"%self.scriptWrapper.getEditedCharacterCount())
-        self.progressBar.setValue((self.scriptWrapper.getEstimatedVideoTime() / settings.recommendedLength) * 100)
+#        self.progressBar.setValue((self.scriptWrapper.getEstimatedVideoTime() / settings.recommendedLength) * 100)
 
         animation_group_on_change = [self.commentamount, self.commentthreads, self.totalwords, self.estvidtime, self.totalaudiolines]
         if keep is True:
