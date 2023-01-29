@@ -1,0 +1,16 @@
+PyQt5
+opencv-python
+Pillow
+numpy
+Mysql-connector
+praw
+pydub
+oauth2client
+soundfile
+pymediainfo
+moviepy
+numpy
+matplotlib
+pandas
+google-cloud-texttospeech
+google-api-python-client
