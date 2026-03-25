@@ -146,3 +146,18 @@ Be default on start up of the YouTube Bot Server, it will request scripts, then 
 Receive credentials for your google API account will be downloaded and saved automatically following a one time login (your browser window will be opened requesting a google account login): videouploader.py -> get_credentials()
 
 
+
+
+<h2>Multi-Platform Publishing</h2>
+
+Want to also publish to TikTok and Instagram? Use [Upload-Post](https://upload-post.com) to upload to multiple platforms at once:
+
+```bash
+curl -X POST https://api.upload-post.com/upload \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "video=@output/video.mp4" \
+  -F "title=Reddit TTS Video" \
+  -F "platforms=tiktok,youtube,instagram"
+```
+
+Upload-Post provides a single API to publish videos across all major platforms. [Get your API key here](https://upload-post.com).
